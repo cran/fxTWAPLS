@@ -1,0 +1,45 @@
+Package: fxTWAPLS
+Title: An Improved Version of WA-PLS
+Version: 0.0.2
+Authors@R: c(
+    person(given = "Mengmeng",
+           family = "Liu",
+           role = c("aut"),
+           email = "m.liu18@imperial.ac.uk",
+           comment = c(ORCID = "0000-0001-6250-0148")),
+    person(given = "Roberto",
+           family = "Villegas-Diaz",
+           role = c("aut", "cre"),
+           email = "r.villegas-diaz@reading.ac.uk",
+           comment = c(ORCID = "0000-0001-5036-8661")),
+    person("SPECIAL Research Group @ University of Reading", role = c("cph")))
+Description: The goal of this package is to provide an improved version of 
+    WA-PLS (Weighted Averaging Partial Least Squares) by including the 
+    tolerances of taxa and the frequency of the sampled climate variable. 
+    This package also provides a way of leave-out cross-validation that 
+    removes both the test site and sites that are both geographically 
+    close and climatically close for each cycle, to avoid the risk of 
+    pseudo-replication.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/special-uor/fxTWAPLS,
+        https://special-uor.github.io/fxTWAPLS/,
+        https://research.reading.ac.uk/palaeoclimate/
+BugReports: https://github.com/special-uor/fxTWAPLS/issues
+Imports: doParallel, foreach, geosphere, ggplot2, MASS, matrixStats,
+        parallel, tictoc
+Suggests: badger, hexSticker, knitr, kableExtra, pkgdown, rmarkdown,
+        scales, testthat
+Depends: R (>= 3.6)
+RoxygenNote: 7.1.1
+Language: en-GB
+NeedsCompilation: no
+Packaged: 2020-10-06 14:05:41 UTC; roberto.villegas-diaz
+Author: Mengmeng Liu [aut] (<https://orcid.org/0000-0001-6250-0148>),
+  Roberto Villegas-Diaz [aut, cre]
+    (<https://orcid.org/0000-0001-5036-8661>),
+  SPECIAL Research Group @ University of Reading [cph]
+Maintainer: Roberto Villegas-Diaz <r.villegas-diaz@reading.ac.uk>
+Repository: CRAN
+Date/Publication: 2020-10-13 14:50:03 UTC
