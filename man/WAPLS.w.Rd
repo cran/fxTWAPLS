@@ -28,15 +28,13 @@ function. fit is the fitted value of modern training result.
 WA-PLS training function, which can perform \code{fx} correction
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-    
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
 # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 # Get the frequency of each climate variable fx
@@ -51,6 +49,7 @@ fit_f_Tmin <- fxTWAPLS::WAPLS.w(taxa,
                                 nPLS = 5, 
                                 usefx = TRUE, 
                                 fx = fx_Tmin)
+}
 
 }
 \seealso{

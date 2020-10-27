@@ -22,15 +22,13 @@ estimated scatterplot smoothing, which shows the degree of local
 compression
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
 # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 # Get the frequency of each climate variable fx
@@ -57,7 +55,8 @@ fxTWAPLS::plot_residuals(fit_Tmin, 3)
 fxTWAPLS::plot_residuals(fit_f_Tmin, 3)
 fxTWAPLS::plot_residuals(fit_t_Tmin, 3)
 fxTWAPLS::plot_residuals(fit_tf_Tmin, 3)
-    
+}
+
 }
 \seealso{
 \code{\link{TWAPLS.w}} and \code{\link{WAPLS.w}}

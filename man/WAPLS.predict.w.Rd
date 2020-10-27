@@ -21,25 +21,19 @@ a list of the reconstruction results. \code{fit} is the fitted value.
 WA-PLS predict function
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
 # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 # Load reconstruction data
-Holocene <- read.csv(system.file("extdata", 
-                                 "Holocene.csv",
-                                 package = "fxTWAPLS",
-                                 mustWork = TRUE),
-                     row.names = 1)
-taxaColMin <- which(colnames(Holocene) == "Abies")
-taxaColMax <- which(colnames(Holocene) == "Zygophyllaceae")
+Holocene <- read.csv("/path/to/Holocene.csv")
+taxaColMin <- which(colnames(Holocene) == "taxa0")
+taxaColMax <- which(colnames(Holocene) == "taxaN")
 core <- Holocene[, taxaColMin:taxaColMax]
 
 # Get the frequency of each climate variable fx
@@ -60,6 +54,7 @@ fit_f_Tmin <- fxTWAPLS::WAPLS.w(modern_taxa = taxa,
 ## Predict
 fossil_Tmin <- fxTWAPLS::WAPLS.predict.w(fit_Tmin, core)
 fossil_f_Tmin <- fxTWAPLS::WAPLS.predict.w(fit_f_Tmin, core)
+}
 
 }
 \seealso{

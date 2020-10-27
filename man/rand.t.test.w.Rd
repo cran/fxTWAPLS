@@ -21,15 +21,13 @@ a matrix of the statistics of the cross-validation results
 Do a random t-test to the cross-validation results
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
 # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 # Get the frequency of each climate variable fx
@@ -60,7 +58,7 @@ cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
                             fx = fx_Tmin,
                             cpus = 2, # Remove the following line
                             test_mode = test_mode)
-\donttest{
+                            
 ## Random t-test
 rand_Tmin <- fxTWAPLS::rand.t.test.w(cv_Tmin, n.perm = 999)
 rand_f_Tmin <- fxTWAPLS::rand.t.test.w(cv_f_Tmin, n.perm = 999)

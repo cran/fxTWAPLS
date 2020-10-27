@@ -22,15 +22,13 @@ the linear regression line to fitted and \code{x}, which shows the degree
 of overall compression
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
 # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 # Get the frequency of each climate variable fx
@@ -57,6 +55,7 @@ fxTWAPLS::plot_train(fit_Tmin, 3)
 fxTWAPLS::plot_train(fit_f_Tmin, 3)
 fxTWAPLS::plot_train(fit_t_Tmin, 3)
 fxTWAPLS::plot_train(fit_tf_Tmin, 3)
+}
 
 }
 \seealso{

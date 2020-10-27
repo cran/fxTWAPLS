@@ -69,15 +69,13 @@ the bootstrapped standard error for each site
 Function to calculate Sample Specific Errors
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
 # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 # Get the frequency of each climate variable fx
@@ -86,13 +84,9 @@ fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)
 fx_alpha <- fxTWAPLS::fx(modern_pollen$alpha, bin = 0.002)
 
 # Load reconstruction data
-Holocene <- read.csv(system.file("extdata", 
-                                 "Holocene.csv", 
-                                 package = "fxTWAPLS", 
-                                 mustWork = TRUE), 
-                     row.names = 1)
-taxaColMin <- which(colnames(Holocene) == "Abies")
-taxaColMax <- which(colnames(Holocene) == "Zygophyllaceae")
+Holocene <- read.csv("/path/to/Holocene.csv")
+taxaColMin <- which(colnames(Holocene) == "taxa0")
+taxaColMax <- which(colnames(Holocene) == "taxaN")
 core <- Holocene[, taxaColMin:taxaColMax]
 
 # MTCO
@@ -126,6 +120,7 @@ sse_f_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
                                          fx = fx_Tmin,
                                          cpus = 2,
                                          seed = 1)
+}
 
 }
 \seealso{

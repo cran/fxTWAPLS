@@ -29,13 +29,11 @@ cross-validation statistics. The output will be used in
 \code{\link{cv.pr.w}}
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+
 point <- modern_pollen[, c("Long", "Lat")]
-\donttest{
 test_mode <- TRUE # It should be set to FALSE before running
 dist <- fxTWAPLS::get_distance(point, 
                                cpus = 2, # Remove the following line

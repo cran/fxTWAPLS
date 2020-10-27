@@ -7,12 +7,13 @@
 
 <!-- badges: start -->
 
-[![](https://img.shields.io/github/languages/code-size/special-uor/fxTWAPLS.svg)](https://github.com/special-uor/fxTWAPLS)
-[![](https://img.shields.io/badge/devel%20version-0.0.2-yellow.svg)](https://github.com/special-uor/fxTWAPLS)
-[![](https://codecov.io/gh/special-uor/fxTWAPLS/branch/master/graph/badge.svg?token=Q6SYL7AOGR)](https://codecov.io/gh/special-uor/fxTWAPLS)
+<!-- [![](https://img.shields.io/github/languages/code-size/special-uor/fxTWAPLS.svg)](https://github.com/special-uor/fxTWAPLS) -->
+
+[![](https://www.r-pkg.org/badges/version/fxTWAPLS?color=blue)](https://cran.r-project.org/package=fxTWAPLS)
+[![](https://img.shields.io/badge/devel%20version-0.0.3-yellow.svg)](https://github.com/special-uor/fxTWAPLS)
 [![R build
 status](https://github.com/special-uor/fxTWAPLS/workflows/R-CMD-check/badge.svg)](https://github.com/special-uor/fxTWAPLS/actions)
-[![](https://www.r-pkg.org/badges/version/fxTWAPLS?color=black)](https://cran.r-project.org/package=fxTWAPLS)
+<!-- [![](https://codecov.io/gh/special-uor/fxTWAPLS/branch/master/graph/badge.svg?token=Q6SYL7AOGR)](https://codecov.io/gh/special-uor/fxTWAPLS) -->
 <!-- [![R build status](https://github.com/special-uor/fxTWAPLS/workflows/R-CMD-check/badge.svg)](https://github.com/special-uor/fxTWAPLS/actions) -->
 <!-- [![CRAN status](https://www.r-pkg.org/badges/version/fxTWAPLS)](https://CRAN.R-project.org/package=fxTWAPLS) -->
 <!-- badges: end -->
@@ -24,8 +25,7 @@ including the tolerances of taxa and the frequency of the sampled
 climate variable. This package also provides a way of leave-out
 cross-validation that removes both the test site and sites that are both
 geographically close and climatically close for each cycle, to avoid the
-risk of
-pseudo-replication.
+risk of pseudo-replication.
 
 ## Installation
 
@@ -77,18 +77,16 @@ pseudo-replication.
 
 <!-- ``` -->
 
-<!-- You can install the released version of fxTWAPLS from [CRAN](https://CRAN.R-project.org) with: -->
+You can install the released version of fxTWAPLS from
+[CRAN](https://cran.r-project.org/package=fxTWAPLS) with:
 
-<!-- ``` r -->
+``` r
+install.packages("fxTWAPLS")
+```
 
-<!-- install.packages("fxTWAPLS") -->
-
-<!-- ``` -->
-
-<!-- And the development version from [GitHub](https://github.com/) with: -->
-
-You can install the development version from
-[GitHub](https://github.com/) with:
+And the development version from
+[GitHub](https://github.com/special-uor/fxTWAPLS) with:
+<!-- You can install the development version from [GitHub](https://github.com/) with: -->
 
 ``` r
 install.packages("remotes")

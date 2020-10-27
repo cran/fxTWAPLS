@@ -7,33 +7,33 @@
 #' 
 #' @param x the modern climate values 
 #' @param bin bin-width to get the frequency of the modern climate values
+#' @param show_plot boolean flag to show a plot of \code{fx ~ x}
 #'
 #' @return the frequency of the modern climate values
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
 #'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #'     
 #' # Get the frequency of each climate variable fx
 #' fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
 #' fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)
 #' fx_alpha <- fxTWAPLS::fx(modern_pollen$alpha, bin = 0.002)
+#' }
 #' 
 #' @seealso \code{\link{cv.w}}, \code{\link{cv.pr.w}}, and 
 #'     \code{\link{sse.sample}}
-fx <- function(x, bin) {
+fx <- function(x, bin, show_plot = FALSE) {
   pbin <- round((max(x) - min(x)) / bin, digits = 0)
   bin <- (max(x) - min(x)) / pbin
-  hist <- hist(x, breaks = seq(min(x), max(x), by = bin))
+  hist <- hist(x, breaks = seq(min(x), max(x), by = bin), plot = show_plot)
   xbin <- seq(min(x) + bin / 2, max(x) - bin / 2, by = bin)
   counts <- hist[["counts"]]
   fx <- rep(NA, length(x))
@@ -43,7 +43,8 @@ fx <- function(x, bin) {
   if (any(fx == 0)) {
     print("Some x have a count of 0!")
   }
-  plot(fx ~ x)
+  if (show_plot)
+    plot(fx ~ x)
   return(fx)
 }
 
@@ -67,15 +68,13 @@ fx <- function(x, bin) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#'     
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -90,6 +89,7 @@ fx <- function(x, bin) {
 #'                                 nPLS = 5, 
 #'                                 usefx = TRUE, 
 #'                                 fx = fx_Tmin)
+#' }
 #' 
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, and
 #'     \code{\link{WAPLS.predict.w}}
@@ -257,15 +257,13 @@ WAPLS.w <- function(modern_taxa,
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#'     
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -280,6 +278,7 @@ WAPLS.w <- function(modern_taxa,
 #'                                   nPLS = 5, 
 #'                                   usefx = TRUE, 
 #'                                   fx = fx_Tmin)
+#' }
 #' 
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.predict.w}}, and
 #'     \code{\link{WAPLS.w}}
@@ -453,25 +452,19 @@ TWAPLS.w <- function(modern_taxa,
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' 
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Load reconstruction data
-#' Holocene <- read.csv(system.file("extdata", 
-#'                                  "Holocene.csv",
-#'                                  package = "fxTWAPLS",
-#'                                  mustWork = TRUE),
-#'                      row.names = 1)
-#' taxaColMin <- which(colnames(Holocene) == "Abies")
-#' taxaColMax <- which(colnames(Holocene) == "Zygophyllaceae")
+#' Holocene <- read.csv("/path/to/Holocene.csv")
+#' taxaColMin <- which(colnames(Holocene) == "taxa0")
+#' taxaColMax <- which(colnames(Holocene) == "taxaN")
 #' core <- Holocene[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -492,6 +485,7 @@ TWAPLS.w <- function(modern_taxa,
 #' ## Predict
 #' fossil_Tmin <- fxTWAPLS::WAPLS.predict.w(fit_Tmin, core)
 #' fossil_f_Tmin <- fxTWAPLS::WAPLS.predict.w(fit_f_Tmin, core)
+#' }
 #' 
 #' @seealso \code{\link{WAPLS.w}}
 WAPLS.predict.w <- function(WAPLSoutput, fossil_taxa) {
@@ -568,25 +562,19 @@ WAPLS.predict.w <- function(WAPLSoutput, fossil_taxa) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#'     
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Load reconstruction data
-#' Holocene <- read.csv(system.file("extdata", 
-#'                                  "Holocene.csv",
-#'                                  package = "fxTWAPLS",
-#'                                  mustWork = TRUE),
-#'                      row.names = 1)
-#' taxaColMin <- which(colnames(Holocene) == "Abies")
-#' taxaColMax <- which(colnames(Holocene) == "Zygophyllaceae")
+#' Holocene <- read.csv("/path/to/Holocene.csv")
+#' taxaColMin <- which(colnames(Holocene) == "taxa0")
+#' taxaColMax <- which(colnames(Holocene) == "taxaN")
 #' core <- Holocene[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -608,6 +596,7 @@ WAPLS.predict.w <- function(WAPLSoutput, fossil_taxa) {
 #' ## Predict
 #' fossil_t_Tmin <- fxTWAPLS::TWAPLS.predict.w(fit_t_Tmin, core)
 #' fossil_tf_Tmin <- fxTWAPLS::TWAPLS.predict.w(fit_tf_Tmin, core)
+#' }
 #' 
 #' @seealso \code{\link{TWAPLS.w}}
 TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
@@ -708,15 +697,13 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' 
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -725,13 +712,9 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 #' fx_alpha <- fxTWAPLS::fx(modern_pollen$alpha, bin = 0.002)
 #' 
 #' # Load reconstruction data
-#' Holocene <- read.csv(system.file("extdata", 
-#'                                  "Holocene.csv", 
-#'                                  package = "fxTWAPLS", 
-#'                                  mustWork = TRUE), 
-#'                      row.names = 1)
-#' taxaColMin <- which(colnames(Holocene) == "Abies")
-#' taxaColMax <- which(colnames(Holocene) == "Zygophyllaceae")
+#' Holocene <- read.csv("/path/to/Holocene.csv")
+#' taxaColMin <- which(colnames(Holocene) == "taxa0")
+#' taxaColMax <- which(colnames(Holocene) == "taxaN")
 #' core <- Holocene[, taxaColMin:taxaColMax]
 #' 
 #' # MTCO
@@ -765,6 +748,7 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 #'                                          fx = fx_Tmin,
 #'                                          cpus = 2,
 #'                                          seed = 1)
+#' }
 #' 
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, 
 #'     \code{\link{TWAPLS.predict.w}}, \code{\link{WAPLS.w}}, and 
@@ -882,15 +866,13 @@ sse.sample <- function(modern_taxa,
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' 
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -921,8 +903,7 @@ sse.sample <- function(modern_taxa,
 #'                             fx = fx_Tmin,
 #'                             cpus = 2, # Remove the following line
 #'                             test_mode = test_mode)  
-# }
-#' 
+#' }
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, 
 #'     \code{\link{TWAPLS.predict.w}}, \code{\link{WAPLS.w}}, and 
 #'     \code{\link{WAPLS.predict.w}}
@@ -993,13 +974,11 @@ cv.w <- function(modern_taxa,
 #' @export
 #' 
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#' 
 #' point <- modern_pollen[, c("Long", "Lat")]
-#' \donttest{
 #' test_mode <- TRUE # It should be set to FALSE before running
 #' dist <- fxTWAPLS::get_distance(point, 
 #'                                cpus = 2, # Remove the following line
@@ -1068,13 +1047,11 @@ get_distance <- function(point, cpus = 4, test_mode = FALSE, test_it = 5) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#' 
 #' point <- modern_pollen[, c("Long", "Lat")]
-#' \donttest{
 #' test_mode <- TRUE # It should be set to FALSE before running
 #' dist <- fxTWAPLS::get_distance(point, 
 #'                                cpus = 2, # Remove the following line
@@ -1139,18 +1116,16 @@ get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
+#' # Extract taxa
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' point <- modern_pollen[, c("Long", "Lat")]
-#' \donttest{
 #' test_mode <- TRUE # It should be set to FALSE before running
 #' dist <- fxTWAPLS::get_distance(point, 
 #'                                cpus = 2, # Remove the following line
@@ -1251,15 +1226,13 @@ cv.pr.w <- function(modern_taxa,
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' 
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -1290,7 +1263,7 @@ cv.pr.w <- function(modern_taxa,
 #'                             fx = fx_Tmin,
 #'                             cpus = 2, # Remove the following line
 #'                             test_mode = test_mode)
-#' \donttest{
+#'                             
 #' ## Random t-test
 #' rand_Tmin <- fxTWAPLS::rand.t.test.w(cv_Tmin, n.perm = 999)
 #' rand_f_Tmin <- fxTWAPLS::rand.t.test.w(cv_f_Tmin, n.perm = 999)
@@ -1376,15 +1349,13 @@ rand.t.test.w <- function(cvoutput, n.perm = 999) {
 #' @return plotting status
 #' 
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' 
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -1411,6 +1382,7 @@ rand.t.test.w <- function(cvoutput, n.perm = 999) {
 #' fxTWAPLS::plot_train(fit_f_Tmin, 3)
 #' fxTWAPLS::plot_train(fit_t_Tmin, 3)
 #' fxTWAPLS::plot_train(fit_tf_Tmin, 3)
+#' }
 #' 
 #' @seealso \code{\link{TWAPLS.w}} and \code{\link{WAPLS.w}}
 plot_train <- function(train_output, col) {
@@ -1449,15 +1421,13 @@ plot_train <- function(train_output, col) {
 #' @return plotting status
 #' 
 #' @examples
+#' \dontrun{
 #' # Load modern pollen data
-#' modern_pollen <- read.csv(system.file("extdata", 
-#'                                       "Modern_Pollen_gdd_alpha_Tmin.csv", 
-#'                                       package = "fxTWAPLS", 
-#'                                       mustWork = TRUE))
-#' 
+#' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+#'                                       
 #' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "Abies")
-#' taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 #' taxa <- modern_pollen[, taxaColMin:taxaColMax]
 #' 
 #' # Get the frequency of each climate variable fx
@@ -1484,7 +1454,8 @@ plot_train <- function(train_output, col) {
 #' fxTWAPLS::plot_residuals(fit_f_Tmin, 3)
 #' fxTWAPLS::plot_residuals(fit_t_Tmin, 3)
 #' fxTWAPLS::plot_residuals(fit_tf_Tmin, 3)
-#'     
+#' }
+#' 
 #' @seealso \code{\link{TWAPLS.w}} and \code{\link{WAPLS.w}}
 plot_residuals <- function(train_output, col) {
   x <- train_output[["x"]]

@@ -1,6 +1,6 @@
 Package: fxTWAPLS
 Title: An Improved Version of WA-PLS
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person(given = "Mengmeng",
            family = "Liu",
@@ -27,19 +27,19 @@ URL: https://github.com/special-uor/fxTWAPLS,
         https://special-uor.github.io/fxTWAPLS/,
         https://research.reading.ac.uk/palaeoclimate/
 BugReports: https://github.com/special-uor/fxTWAPLS/issues
-Imports: doParallel, foreach, geosphere, ggplot2, MASS, matrixStats,
-        parallel, tictoc
+Imports: doParallel, foreach, geosphere, ggplot2, MASS, parallel,
+        tictoc
 Suggests: badger, hexSticker, knitr, kableExtra, pkgdown, rmarkdown,
         scales, testthat
 Depends: R (>= 3.6)
 RoxygenNote: 7.1.1
 Language: en-GB
 NeedsCompilation: no
-Packaged: 2020-10-06 14:05:41 UTC; roberto.villegas-diaz
+Packaged: 2020-10-27 07:43:31 UTC; roberto.villegas-diaz
 Author: Mengmeng Liu [aut] (<https://orcid.org/0000-0001-6250-0148>),
   Roberto Villegas-Diaz [aut, cre]
     (<https://orcid.org/0000-0001-5036-8661>),
   SPECIAL Research Group @ University of Reading [cph]
 Maintainer: Roberto Villegas-Diaz <r.villegas-diaz@reading.ac.uk>
 Repository: CRAN
-Date/Publication: 2020-10-13 14:50:03 UTC
+Date/Publication: 2020-10-27 08:00:02 UTC

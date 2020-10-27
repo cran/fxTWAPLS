@@ -58,18 +58,16 @@ leave-one-out cross validation results
 Pseudo-removed leave-out cross-validation
 }
 \examples{
+\dontrun{
 # Load modern pollen data
-modern_pollen <- read.csv(system.file("extdata", 
-                                      "Modern_Pollen_gdd_alpha_Tmin.csv", 
-                                      package = "fxTWAPLS", 
-                                      mustWork = TRUE))
-#' # Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "Abies")
-taxaColMax <- which(colnames(modern_pollen) == "Zygophyllaceae")
+modern_pollen <- read.csv("/path/to/modern_pollen.csv")
+                                      
+# Extract taxa
+taxaColMin <- which(colnames(modern_pollen) == "taxa0")
+taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 point <- modern_pollen[, c("Long", "Lat")]
-\donttest{
 test_mode <- TRUE # It should be set to FALSE before running
 dist <- fxTWAPLS::get_distance(point, 
                                cpus = 2, # Remove the following line
