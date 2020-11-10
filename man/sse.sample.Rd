@@ -2,7 +2,7 @@
 % Please edit documentation in R/fxTWAPLS.R
 \name{sse.sample}
 \alias{sse.sample}
-\title{Function to calculate Sample Specific Errors}
+\title{Calculate Sample Specific Errors}
 \usage{
 sse.sample(
   modern_taxa,
@@ -22,51 +22,51 @@ sse.sample(
 )
 }
 \arguments{
-\item{modern_taxa}{the modern taxa abundance data, each row represents a
+\item{modern_taxa}{The modern taxa abundance data, each row represents a
 sampling site, each column represents a taxon.}
 
-\item{modern_climate}{the modern climate value at each sampling site}
+\item{modern_climate}{The modern climate value at each sampling site}
 
-\item{fossil_taxa}{fossil taxa abundance data to reconstruct past climates,
+\item{fossil_taxa}{Fossil taxa abundance data to reconstruct past climates,
 each row represents a site to be reconstructed, each column represents a
 taxon.}
 
-\item{trainfun}{training function you want to use, either
-\code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}}
+\item{trainfun}{Training function you want to use, either
+\code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}.}
 
-\item{predictfun}{predict function you want to use: if \code{trainfun} is
+\item{predictfun}{Predict function you want to use: if \code{trainfun} is
 \code{\link{WAPLS.w}}, then this should be \code{\link{WAPLS.predict.w}};
 if \code{trainfun} is \code{\link{TWAPLS.w}}, then this should be
-\code{\link{TWAPLS.predict.w}}}
+\code{\link{TWAPLS.predict.w}}.}
 
-\item{nboot}{the number of bootstrap cycles you want to use}
+\item{nboot}{The number of bootstrap cycles you want to use.}
 
-\item{nPLS}{the number of components to be extracted}
+\item{nPLS}{The number of components to be extracted.}
 
-\item{nsig}{the significant number of components to use to reconstruct past
+\item{nsig}{The significant number of components to use to reconstruct past
 climates, this can be obtained from the cross-validation results.}
 
-\item{usefx}{boolean flag on whether or not use \code{fx} correction.}
+\item{usefx}{Boolean flag on whether or not use \code{fx} correction.}
 
-\item{fx}{the frequency of the climate value for \code{fx} correction: if
-\code{usefx} is FALSE, this should be \code{NA}; otherwise, this should
+\item{fx}{The frequency of the climate value for \code{fx} correction: if
+\code{usefx = FALSE}, this should be \code{NA}; otherwise, this should
 be obtained from the \code{\link{fx}} function.}
 
-\item{cpus}{number of CPUs for simultaneous iterations to execute, check
+\item{cpus}{Number of CPUs for simultaneous iterations to execute, check
 \code{parallel::detectCores()} for available CPUs on your machine.}
 
-\item{seed}{seed for reproducibility}
+\item{seed}{Seed for reproducibility.}
 
-\item{test_mode}{boolean flag to execute the function with a limited number
+\item{test_mode}{Boolean flag to execute the function with a limited number
 of iterations, \code{test_it}, for testing purposes only.}
 
-\item{test_it}{number of iterations to use in the test mode}
+\item{test_it}{Number of iterations to use in the test mode.}
 }
 \value{
-the bootstrapped standard error for each site
+The bootstrapped standard error for each site.
 }
 \description{
-Function to calculate Sample Specific Errors
+Calculate Sample Specific Errors
 }
 \examples{
 \dontrun{
@@ -99,7 +99,8 @@ sse_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
                                        modern_climate = modern_pollen$Tmin,
                                        fossil_taxa = core,
                                        trainfun = fxTWAPLS::WAPLS.w,
-                                       predictfun = fxTWAPLS::WAPLS.predict.w,
+                                       predictfun = 
+                                         fxTWAPLS::WAPLS.predict.w,
                                        nboot = nboot,
                                        nPLS = 5,
                                        nsig = 3,
@@ -109,10 +110,12 @@ sse_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
                                        seed = 1)
 ### with fx
 sse_f_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
-                                         modern_climate = modern_pollen$Tmin,
+                                         modern_climate = 
+                                           modern_pollen$Tmin,
                                          fossil_taxa = core,
                                          trainfun = fxTWAPLS::WAPLS.w,
-                                         predictfun = fxTWAPLS::WAPLS.predict.w,
+                                         predictfun = 
+                                           fxTWAPLS::WAPLS.predict.w,
                                          nboot = nboot,
                                          nPLS = 5,
                                          nsig = 3,

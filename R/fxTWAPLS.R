@@ -1,27 +1,25 @@
+#' @keywords internal
+"_PACKAGE"
+
 #' Get frequency of the climate value
 #' 
 #' Function to get the frequency of the climate value, which will be used to 
-#'     provide \code{fx} correction for WA-PLS and TWA-PLS
+#'     provide \code{fx} correction for WA-PLS and TWA-PLS.
 #'
 #' @importFrom graphics plot
 #' 
-#' @param x the modern climate values 
-#' @param bin bin-width to get the frequency of the modern climate values
-#' @param show_plot boolean flag to show a plot of \code{fx ~ x}
+#' @param x Numeric vector with the modern climate values.
+#' @param bin Binwidth to get the frequency of the modern climate values.
+#' @param show_plot Boolean flag to show a plot of \code{fx ~ x}.
 #'
-#' @return the frequency of the modern climate values
+#' @return Numeric vector with the frequency of the modern climate values.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' # Load modern pollen data
 #' modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-#'                                       
-#' # Extract taxa
-#' taxaColMin <- which(colnames(modern_pollen) == "taxa0")
-#' taxaColMax <- which(colnames(modern_pollen) == "taxaN")
-#' taxa <- modern_pollen[, taxaColMin:taxaColMax]
-#'     
+#' 
 #' # Get the frequency of each climate variable fx
 #' fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
 #' fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)
@@ -50,21 +48,41 @@ fx <- function(x, bin, show_plot = FALSE) {
 
 #' WA-PLS training function
 #' 
-#' WA-PLS training function, which can perform \code{fx} correction
+#' WA-PLS training function, which can perform \code{fx} correction.
 #' 
 #' @importFrom stats lm
 #' 
-#' @param modern_taxa the modern taxa abundance data, each row represents a 
+#' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
-#' @param modern_climate the modern climate value at each sampling site
-#' @param nPLS the number of components to be extracted
-#' @param usefx boolean flag on whether or not use \code{fx} correction.
-#' @param fx the frequency of the climate value for \code{fx} correction: if 
-#'     \code{usefx} is FALSE, this should be \code{NA}; otherwise, this should 
+#' @param modern_climate The modern climate value at each sampling site.
+#' @param nPLS The number of components to be extracted.
+#' @param usefx Boolean flag on whether or not use \code{fx} correction.
+#' @param fx The frequency of the climate value for \code{fx} correction: if 
+#'     \code{usefx = FALSE}, this should be \code{NA}; otherwise, this should 
 #'     be obtained from the \code{\link{fx}} function.
 #'
-#' @return a list of the training results, which will be used by the predict 
-#'     function. fit is the fitted value of modern training result.
+#' @return A list of the training results, which will be used by the predict 
+#'     function. Each element in the list is described below:
+#'     \describe{
+#'     \item{\code{fit}}{the fitted values using each number of components.}
+#'     \item{\code{x}}{the observed modern climate values.}
+#'     \item{\code{taxon_name}}{the name of each taxon.}
+#'     \item{\code{optimum}}{the updated taxon optimum (u* in the WA-PLS 
+#'     paper).}
+#'     \item{\code{comp}}{each component extracted (will be used in step 7 
+#'     regression).}
+#'     \item{\code{u}}{taxon optimum for each component (step 2).}
+#'     \item{\code{z}}{a parameter used in standardization for each component 
+#'     (step 5).}
+#'     \item{\code{s}}{a parameter used in standardization for each component 
+#'     (step 5).}
+#'     \item{\code{orth}}{a list that stores orthogonalization parameters 
+#'     (step 4).}
+#'     \item{\code{alpha}}{a list that stores regression coefficients (step 7).}
+#'     \item{\code{meanx}}{mean value of the observed modern climate values.}
+#'     \item{\code{nPLS}}{the total number of components extracted.}
+#'     }
+#'     
 #' @export
 #'
 #' @examples
@@ -239,21 +257,34 @@ WAPLS.w <- function(modern_taxa,
 
 #' TWA-PLS training function
 #' 
-#' TWA-PLS training function, which can perform \code{fx} correction
+#' TWA-PLS training function, which can perform \code{fx} correction.
 #' 
 #' @importFrom stats lm
 #' 
-#' @param modern_taxa the modern taxa abundance data, each row represents a 
-#'     sampling site, each column represents a taxon.
-#' @param modern_climate the modern climate value at each sampling site
-#' @param nPLS the number of components to be extracted
-#' @param usefx boolean flag on whether or not use \code{fx} correction.
-#' @param fx the frequency of the climate value for \code{fx} correction: if 
-#'     \code{usefx} is FALSE, this should be \code{NA}; otherwise, this should 
-#'     be obtained from the \code{\link{fx}} function.
+#' @inheritParams WAPLS.w
 #'
-#' @return a list of the training results, which will be used by the predict 
-#'     function. fit is the fitted value of modern training result.
+#' @return A list of the training results, which will be used by the predict 
+#'     function. Each element in the list is described below:
+#'     \describe{
+#'     \item{\code{fit}}{the fitted values using each number of components.}
+#'     \item{\code{x}}{the observed modern climate values.}
+#'     \item{\code{taxon_name}}{the name of each taxon.}
+#'     \item{\code{optimum}}{the updated taxon optimum}
+#'     \item{\code{comp}}{each component extracted (will be used in step 7 
+#'     regression).}
+#'     \item{\code{u}}{taxon optimum for each component (step 2).}
+#'     \item{\code{t}}{taxon tolerance for each component (step 2).}
+#'     \item{\code{z}}{a parameter used in standardization for each component 
+#'     (step 5).}
+#'     \item{\code{s}}{a parameter used in standardization for each component 
+#'     (step 5).}
+#'     \item{\code{orth}}{a list that stores orthogonalization parameters 
+#'     (step 4).}
+#'     \item{\code{alpha}}{a list that stores regression coefficients (step 7).}
+#'     \item{\code{meanx}}{mean value of the observed modern climate values.}
+#'     \item{\code{nPLS}}{the total number of components extracted.}
+#'     }
+#'     
 #' @export
 #'
 #' @examples
@@ -442,13 +473,19 @@ TWAPLS.w <- function(modern_taxa,
 
 #' WA-PLS predict function
 #'
-#' @param WAPLSoutput the output of the \code{\link{WAPLS.w}} training function, 
-#'     either with or without \code{fx} correction
-#' @param fossil_taxa fossil taxa abundance data to reconstruct past climates, 
+#' @param WAPLSoutput The output of the \code{\link{WAPLS.w}} training function, 
+#'     either with or without \code{fx} correction.
+#' @param fossil_taxa Fossil taxa abundance data to reconstruct past climates, 
 #'     each row represents a site to be reconstructed, each column represents a 
 #'     taxon.
 #'
-#' @return a list of the reconstruction results. \code{fit} is the fitted value.
+#' @return A list of the reconstruction results. Each element in the list is 
+#'     described below:
+#'     \describe{
+#'     \item{\code{fit}}{The fitted values using each number of components.}
+#'     \item{\code{nPLS}}{The total number of components extracted.}
+#'     }
+#'     
 #' @export
 #'
 #' @examples
@@ -552,13 +589,19 @@ WAPLS.predict.w <- function(WAPLSoutput, fossil_taxa) {
 
 #' TWA-PLS predict function
 #'
-#' @param TWAPLSoutput the output of the \code{\link{TWAPLS.w}} training 
-#'     function, either with or without \code{fx} correction
-#' @param fossil_taxa fossil taxa abundance data to reconstruct past climates, 
+#' @param TWAPLSoutput The output of the \code{\link{TWAPLS.w}} training 
+#'     function, either with or without \code{fx} correction.
+#' @param fossil_taxa Fossil taxa abundance data to reconstruct past climates, 
 #'     each row represents a site to be reconstructed, each column represents 
 #'     a taxon.
 #'
-#' @return a list of the reconstruction results. \code{fit} is the fitted value.
+#' @return A list of the reconstruction results. Each element in the list is 
+#'     described below:
+#'     \describe{
+#'     \item{\code{fit}}{the fitted values using each number of components.}
+#'     \item{\code{nPLS}}{the total number of components extracted.}
+#'     }
+#'     
 #' @export
 #'
 #' @examples
@@ -664,36 +707,36 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
   return(list)
 }
 
-#' Function to calculate Sample Specific Errors
+#' Calculate Sample Specific Errors
 #'
-#' @param modern_taxa the modern taxa abundance data, each row represents a 
+#' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
-#' @param modern_climate the modern climate value at each sampling site
-#' @param fossil_taxa fossil taxa abundance data to reconstruct past climates, 
+#' @param modern_climate The modern climate value at each sampling site
+#' @param fossil_taxa Fossil taxa abundance data to reconstruct past climates, 
 #'     each row represents a site to be reconstructed, each column represents a 
 #'     taxon.
-#' @param trainfun training function you want to use, either 
-#'     \code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}
-#' @param predictfun predict function you want to use: if \code{trainfun} is 
+#' @param trainfun Training function you want to use, either 
+#'     \code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}.
+#' @param predictfun Predict function you want to use: if \code{trainfun} is 
 #'     \code{\link{WAPLS.w}}, then this should be \code{\link{WAPLS.predict.w}}; 
 #'     if \code{trainfun} is \code{\link{TWAPLS.w}}, then this should be 
-#'     \code{\link{TWAPLS.predict.w}}
-#' @param nboot the number of bootstrap cycles you want to use
-#' @param nPLS the number of components to be extracted
-#' @param nsig the significant number of components to use to reconstruct past 
+#'     \code{\link{TWAPLS.predict.w}}.
+#' @param nboot The number of bootstrap cycles you want to use.
+#' @param nPLS The number of components to be extracted.
+#' @param nsig The significant number of components to use to reconstruct past 
 #'     climates, this can be obtained from the cross-validation results.
-#' @param usefx boolean flag on whether or not use \code{fx} correction.
-#' @param fx the frequency of the climate value for \code{fx} correction: if 
-#'     \code{usefx} is FALSE, this should be \code{NA}; otherwise, this should 
+#' @param usefx Boolean flag on whether or not use \code{fx} correction.
+#' @param fx The frequency of the climate value for \code{fx} correction: if 
+#'     \code{usefx = FALSE}, this should be \code{NA}; otherwise, this should 
 #'     be obtained from the \code{\link{fx}} function.
-#' @param cpus number of CPUs for simultaneous iterations to execute, check
+#' @param cpus Number of CPUs for simultaneous iterations to execute, check
 #'     \code{parallel::detectCores()} for available CPUs on your machine.
-#' @param seed seed for reproducibility
-#' @param test_mode boolean flag to execute the function with a limited number
+#' @param seed Seed for reproducibility.
+#' @param test_mode Boolean flag to execute the function with a limited number
 #'     of iterations, \code{test_it}, for testing purposes only.
-#' @param test_it number of iterations to use in the test mode
+#' @param test_it Number of iterations to use in the test mode.
 #'
-#' @return the bootstrapped standard error for each site
+#' @return The bootstrapped standard error for each site.
 #' @export
 #'
 #' @examples
@@ -727,7 +770,8 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 #'                                        modern_climate = modern_pollen$Tmin,
 #'                                        fossil_taxa = core,
 #'                                        trainfun = fxTWAPLS::WAPLS.w,
-#'                                        predictfun = fxTWAPLS::WAPLS.predict.w,
+#'                                        predictfun = 
+#'                                          fxTWAPLS::WAPLS.predict.w,
 #'                                        nboot = nboot,
 #'                                        nPLS = 5,
 #'                                        nsig = 3,
@@ -737,10 +781,12 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 #'                                        seed = 1)
 #' ### with fx
 #' sse_f_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
-#'                                          modern_climate = modern_pollen$Tmin,
+#'                                          modern_climate = 
+#'                                            modern_pollen$Tmin,
 #'                                          fossil_taxa = core,
 #'                                          trainfun = fxTWAPLS::WAPLS.w,
-#'                                          predictfun = fxTWAPLS::WAPLS.predict.w,
+#'                                          predictfun = 
+#'                                            fxTWAPLS::WAPLS.predict.w,
 #'                                          nboot = nboot,
 #'                                          nPLS = 5,
 #'                                          nsig = 3,
@@ -838,29 +884,29 @@ sse.sample <- function(modern_taxa,
 #' Leave-one-out cross-validation
 #' 
 #' Leave-one-out cross-validation as 
-#'     \code{rioja} (\url{https://cran.r-project.org/package=rioja})
+#'     \code{rioja} (\url{https://cran.r-project.org/package=rioja}).
 #' 
 #' @importFrom foreach `%dopar%`
 #' 
-#' @param modern_taxa the modern taxa abundance data, each row represents a 
+#' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
-#' @param modern_climate the modern climate value at each sampling site
-#' @param nPLS the number of components to be extracted
-#' @param trainfun training function you want to use, either 
-#'     \code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}
-#' @param predictfun predict function you want to use: if \code{trainfun} is 
+#' @param modern_climate The modern climate value at each sampling site.
+#' @param nPLS The number of components to be extracted.
+#' @param trainfun Training function you want to use, either 
+#'     \code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}.
+#' @param predictfun Predict function you want to use: if \code{trainfun} is 
 #'     \code{\link{WAPLS.w}}, then this should be \code{\link{WAPLS.predict.w}}; 
 #'     if \code{trainfun} is \code{\link{TWAPLS.w}}, then this should be 
-#'     \code{\link{TWAPLS.predict.w}}
-#' @param usefx boolean flag on whether or not use \code{fx} correction.
-#' @param fx the frequency of the climate value for \code{fx} correction: if 
-#'     \code{usefx} is FALSE, this should be \code{NA}; otherwise, this should 
+#'     \code{\link{TWAPLS.predict.w}}.
+#' @param usefx Boolean flag on whether or not use \code{fx} correction.
+#' @param fx The frequency of the climate value for \code{fx} correction: if 
+#'     \code{usefx = FALSE}, this should be \code{NA}; otherwise, this should 
 #'     be obtained from the \code{\link{fx}} function.
-#' @param cpus number of CPUs for simultaneous iterations to execute, check
+#' @param cpus Number of CPUs for simultaneous iterations to execute, check
 #'     \code{parallel::detectCores()} for available CPUs on your machine.
 #' @param test_mode boolean flag to execute the function with a limited number
 #'     of iterations, \code{test_it}, for testing purposes only.
-#' @param test_it number of iterations to use in the test mode
+#' @param test_it number of iterations to use in the test mode.
 #'
 #' @return leave-one-out cross validation results
 #' @export
@@ -957,20 +1003,20 @@ cv.w <- function(modern_taxa,
 #' Get the distance between points
 #' 
 #' Get the distance between points, the output will be used in 
-#'     \code{\link{get_pseudo}}
+#'     \code{\link{get_pseudo}}.
 #' 
 #' @importFrom foreach `%dopar%` 
 #' 
-#' @param point each row represents a sampling site, the first column is 
-#'     longitude and the second column is latitude, both in decimal format
-#' @param cpus number of CPUs for simultaneous iterations to execute, check
+#' @param point Each row represents a sampling site, the first column is 
+#'     longitude and the second column is latitude, both in decimal format.
+#' @param cpus Number of CPUs for simultaneous iterations to execute, check
 #'     \code{parallel::detectCores()} for available CPUs on your machine.
-#' @param test_mode boolean flag to execute the function with a limited number
+#' @param test_mode Boolean flag to execute the function with a limited number
 #'     of iterations, \code{test_it}, for testing purposes only.
-#' @param test_it number of iterations to use in the test mode
+#' @param test_it Number of iterations to use in the test mode.
 #'    
-#' @return distance matrix, the value at the \code{i-th} row, means the distance 
-#'     between the \code{i-th} sampling site and the whole sampling sites
+#' @return Distance matrix, the value at the \code{i-th} row, means the distance 
+#'     between the \code{i-th} sampling site and the whole sampling sites.
 #' @export
 #' 
 #' @examples
@@ -1033,17 +1079,17 @@ get_distance <- function(point, cpus = 4, test_mode = FALSE, test_it = 5) {
 #' Get the sites which are both geographically and climatically close to the 
 #'     test site, which could result in pseudo-replication and inflate the 
 #'     cross-validation statistics. The output will be used in 
-#'     \code{\link{cv.pr.w}}
+#'     \code{\link{cv.pr.w}}.
 #'
-#' @param dist distance matrix which contains the distance from other sites.
-#' @param x the modern climate values
-#' @param cpus number of CPUs for simultaneous iterations to execute, check
+#' @param dist Distance matrix which contains the distance from other sites.
+#' @param x The modern climate values.
+#' @param cpus Number of CPUs for simultaneous iterations to execute, check
 #'     \code{parallel::detectCores()} for available CPUs on your machine.
-#' @param test_mode boolean flag to execute the function with a limited number
+#' @param test_mode Boolean flag to execute the function with a limited number
 #'     of iterations, \code{test_it}, for testing purposes only.
-#' @param test_it number of iterations to use in the test mode
+#' @param test_it Number of iterations to use in the test mode.
 #' 
-#' @return the geographically and climatically close sites to each test site.
+#' @return The geographically and climatically close sites to each test site.
 #' @export
 #'
 #' @examples
@@ -1090,29 +1136,29 @@ get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
 
 #' Pseudo-removed leave-out cross-validation
 #'
-#' @param modern_taxa the modern taxa abundance data, each row represents a 
+#' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
-#' @param modern_climate the modern climate value at each sampling site
-#' @param nPLS the number of components to be extracted
-#' @param trainfun training function you want to use, either 
-#'     \code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}
-#' @param predictfun predict function you want to use: if \code{trainfun} is 
+#' @param modern_climate The modern climate value at each sampling site.
+#' @param nPLS The number of components to be extracted.
+#' @param trainfun Training function you want to use, either 
+#'     \code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}.
+#' @param predictfun Predict function you want to use: if \code{trainfun} is 
 #'     \code{\link{WAPLS.w}}, then this should be \code{\link{WAPLS.predict.w}}; 
 #'     if \code{trainfun} is \code{\link{TWAPLS.w}}, then this should be 
-#'     \code{\link{TWAPLS.predict.w}}
-#' @param pseudo the geographically and climatically close sites to each test 
-#'     site, obtained from \code{\link{get_pseudo}} function
-#' @param usefx boolean flag on whether or not use \code{fx} correction.
-#' @param fx the frequency of the climate value for \code{fx} correction: if 
+#'     \code{\link{TWAPLS.predict.w}}.
+#' @param pseudo The geographically and climatically close sites to each test 
+#'     site, obtained from \code{\link{get_pseudo}} function.
+#' @param usefx Boolean flag on whether or not use \code{fx} correction.
+#' @param fx The frequency of the climate value for \code{fx} correction: if 
 #'     \code{usefx} is FALSE, this should be \code{NA}; otherwise, this should 
 #'     be obtained from the \code{\link{fx}} function.
-#' @param cpus number of CPUs for simultaneous iterations to execute, check
+#' @param cpus Number of CPUs for simultaneous iterations to execute, check
 #'     \code{parallel::detectCores()} for available CPUs on your machine.
-#' @param test_mode boolean flag to execute the function with a limited number
+#' @param test_mode Boolean flag to execute the function with a limited number
 #'     of iterations, \code{test_it}, for testing purposes only.
-#' @param test_it number of iterations to use in the test mode
+#' @param test_it Number of iterations to use in the test mode.
 #'
-#' @return leave-one-out cross validation results
+#' @return Leave-one-out cross validation results.
 #' @export
 #'
 #' @examples
@@ -1138,20 +1184,20 @@ get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
 #' cv_pr_Tmin <- fxTWAPLS::cv.pr.w(taxa,
 #'                                 modern_pollen$Tmin,
 #'                                 nPLS = 5,
-#'                                 fxTWAPLS::TWAPLS.w,
-#'                                 fxTWAPLS::TWAPLS.predict.w,
+#'                                 fxTWAPLS::WAPLS.w,
+#'                                 fxTWAPLS::WAPLS.predict.w,
 #'                                 pseudo_Tmin,
 #'                                 cpus = 2, # Remove the following line
 #'                                 test_mode = test_mode)
 #' # Test TWAPLS
-#' cv_pr_t_Tmin <- fxTWAPLS::cv.pr.w(taxa,
-#'                                   modern_pollen$Tmin,
-#'                                   nPLS = 5,
-#'                                   fxTWAPLS::TWAPLS.w,
-#'                                   fxTWAPLS::TWAPLS.predict.w,
-#'                                   pseudo_Tmin,
-#'                                   cpus = 2, # Remove the following line
-#'                                   test_mode = test_mode)
+#' cv_pr_Tmin2 <- fxTWAPLS::cv.pr.w(taxa,
+#'                                  modern_pollen$Tmin,
+#'                                  nPLS = 5,
+#'                                  fxTWAPLS::TWAPLS.w,
+#'                                  fxTWAPLS::TWAPLS.predict.w,
+#'                                  pseudo_Tmin,
+#'                                  cpus = 2, # Remove the following line
+#'                                  test_mode = test_mode)
 #' }
 #' 
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, 
@@ -1210,19 +1256,45 @@ cv.pr.w <- function(modern_taxa,
 
 #' Random t-test
 #' 
-#' Do a random t-test to the cross-validation results
+#' Do a random t-test to the cross-validation results.
 #' 
-#' @importFrom stats cor
-#' @importFrom stats lm
-#' @importFrom stats rbinom
+#' @importFrom stats cor lm rbinom
 #' 
-#' @param cvoutput cross-validation output either from \code{\link{cv.w}} or 
-#'     \code{\link{cv.pr.w}}
-#' @param n.perm the number of permutation times to get the p value, which 
+#' @param cvoutput Cross-validation output either from \code{\link{cv.w}} or 
+#'     \code{\link{cv.pr.w}}.
+#' @param n.perm The number of permutation times to get the p value, which 
 #'     assesses whether using the current number of components is significantly 
 #'     different from using one less.
 #'
-#' @return a matrix of the statistics of the cross-validation results
+#' @return A matrix of the statistics of the cross-validation results. Each 
+#'     component is described below:
+#'     \describe{
+#'     \item{\code{R2}}{the coefficient of determination (the larger, the 
+#'     better the fit).}
+#'     \item{\code{Avg.Bias}}{average bias.}
+#'     \item{\code{Max.Bias}}{maximum bias.}
+#'     \item{\code{Min.Bias}}{minimum bias.}
+#'     \item{\code{RMSEP}}{root-mean-square error of prediction (the smaller, 
+#'     the better the fit).}
+#'     \item{\code{delta.RMSEP}}{the percent change of RMSEP using the current 
+#'     number of components than using one component less.}
+#'     \item{\code{p}}{assesses whether using the current number of components 
+#'     is significantly different from using one component less, which is used 
+#'     to choose the last significant number of components to avoid 
+#'     over-fitting.}
+#'     \item{\code{-}}{The degree of overall compression is assessed by doing 
+#'     linear regression to the cross-validation result and the observed 
+#'     climate values.
+#'         \itemize{
+#'         \item \code{Compre.b0}: the intercept.
+#'         \item \code{Compre.b1}: the slope (the closer to 1, the less the 
+#'         overall compression).
+#'         \item \code{Compre.b0.se}: the standard error of the intercept.
+#'         \item \code{Compre.b1.se}: the standard error of the slope.
+#'         }
+#'     }
+#'     }
+#'         
 #' @export
 #'
 #' @examples
@@ -1337,16 +1409,16 @@ rand.t.test.w <- function(cvoutput, n.perm = 999) {
 #' 
 #' Plot the training results, the black line is the 1:1 line, the red line is 
 #'     the linear regression line to fitted and \code{x}, which shows the degree 
-#'     of overall compression
+#'     of overall compression.
 #' 
 #' @param train_output Training output, can be the output of WA-PLS, WA-PLS with 
-#'     \code{fx} correction, TWA-PLS, or TWA-PLS with \code{fx} correction
-#' @param col choose which column of the fitted value to plot, in other words, 
-#'     how many number of components you want to use
+#'     \code{fx} correction, TWA-PLS, or TWA-PLS with \code{fx} correction.
+#' @param col Choose which column of the fitted value to plot, in other words, 
+#'     how many number of components you want to use.
 #'     
 #' @export
 #' 
-#' @return plotting status
+#' @return Plotting status.
 #' 
 #' @examples
 #' \dontrun{
@@ -1409,16 +1481,16 @@ plot_train <- function(train_output, col) {
 #' 
 #' Plot the residuals, the black line is 0 line, the red line is the locally 
 #'     estimated scatterplot smoothing, which shows the degree of local 
-#'     compression
+#'     compression.
 #' 
 #' @param train_output Training output, can be the output of WA-PLS, WA-PLS with 
 #'     \code{fx} correction, TWA-PLS, or TWA-PLS with \code{fx} correction
-#' @param col choose which column of the fitted value to plot, in other words, 
-#'     how many number of components you want to use
+#' @param col Choose which column of the fitted value to plot, in other words, 
+#'     how many number of components you want to use.
 #' 
 #' @export
 #' 
-#' @return plotting status
+#' @return Plotting status.
 #' 
 #' @examples
 #' \dontrun{

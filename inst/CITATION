@@ -1,0 +1,17 @@
+citHeader("To cite fxTWAPLS in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "An improved statistical approach for reconstructing past climates from biotic assemblages",
+  author   = personList(as.person("Mengmeng Liu"),
+  as.person("Iain Colin Prentice"),
+  as.person("Cajo J. F. ter Braak"), 
+  as.person("Sandy P. Harrison")),
+  journal  = "Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences",
+  year     = "2020",
+  volume   = "",
+  number   = "",
+  pages    = "",
+  url      = "",
+  textVersion = paste("Liu Mengmeng, Prentice Iain Colin, ter Braak Cajo J. F., Harrison Sandy P.. An improved statistical approach for reconstructing past climates from biotic assemblages. Proc. R. Soc. A. 2020")
+)

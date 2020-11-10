@@ -7,29 +7,24 @@
 fx(x, bin, show_plot = FALSE)
 }
 \arguments{
-\item{x}{the modern climate values}
+\item{x}{Numeric vector with the modern climate values.}
 
-\item{bin}{bin-width to get the frequency of the modern climate values}
+\item{bin}{Binwidth to get the frequency of the modern climate values.}
 
-\item{show_plot}{boolean flag to show a plot of \code{fx ~ x}}
+\item{show_plot}{Boolean flag to show a plot of \code{fx ~ x}.}
 }
 \value{
-the frequency of the modern climate values
+Numeric vector with the frequency of the modern climate values.
 }
 \description{
 Function to get the frequency of the climate value, which will be used to
-provide \code{fx} correction for WA-PLS and TWA-PLS
+provide \code{fx} correction for WA-PLS and TWA-PLS.
 }
 \examples{
 \dontrun{
 # Load modern pollen data
 modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-                                      
-# Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "taxa0")
-taxaColMax <- which(colnames(modern_pollen) == "taxaN")
-taxa <- modern_pollen[, taxaColMin:taxaColMax]
-    
+
 # Get the frequency of each climate variable fx
 fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
 fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)

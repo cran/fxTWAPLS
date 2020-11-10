@@ -10,7 +10,7 @@
 <!-- [![](https://img.shields.io/github/languages/code-size/special-uor/fxTWAPLS.svg)](https://github.com/special-uor/fxTWAPLS) -->
 
 [![](https://www.r-pkg.org/badges/version/fxTWAPLS?color=blue)](https://cran.r-project.org/package=fxTWAPLS)
-[![](https://img.shields.io/badge/devel%20version-0.0.3-yellow.svg)](https://github.com/special-uor/fxTWAPLS)
+[![](https://img.shields.io/badge/devel%20version-0.0.4-yellow.svg)](https://github.com/special-uor/fxTWAPLS)
 [![R build
 status](https://github.com/special-uor/fxTWAPLS/workflows/R-CMD-check/badge.svg)](https://github.com/special-uor/fxTWAPLS/actions)
 <!-- [![](https://codecov.io/gh/special-uor/fxTWAPLS/branch/master/graph/badge.svg?token=Q6SYL7AOGR)](https://codecov.io/gh/special-uor/fxTWAPLS) -->
@@ -35,48 +35,6 @@ risk of pseudo-replication.
 
 <!-- there is no need to configure it again. -->
 
-<!-- ```{r, eval = FALSE} -->
-
-<!-- # install.packages("usethis") -->
-
-<!-- usethis::browse_github_pat(scopes = "repo",  -->
-
-<!--                            description = "R:GITHUB_PAT",  -->
-
-<!--                            host = "https://github.com/special-uor") -->
-
-<!-- ``` -->
-
-<!-- Copy the generated token. Then, run the following command: -->
-
-<!-- ```{r, eval = FALSE} -->
-
-<!-- usethis::edit_r_environ() -->
-
-<!-- ``` -->
-
-<!-- Add a new line to the `.Renviron` file: -->
-
-<!-- ```bash -->
-
-<!-- GITHUB_PAT=xxxyyyzzz -->
-
-<!-- ``` -->
-
-<!-- Make sure to leave a new empty line after `GITHUB_PAT`. Restart R (Session >  -->
-
-<!-- Restart R in the RStudio menu bar), as environment variables are loaded from  -->
-
-<!-- `.Renviron` only at the start of an R session.  -->
-
-<!-- Check that the PAT is now available like so: -->
-
-<!-- ```{r, eval = FALSE} -->
-
-<!-- usethis::git_sitrep() -->
-
-<!-- ``` -->
-
 You can install the released version of fxTWAPLS from
 [CRAN](https://cran.r-project.org/package=fxTWAPLS) with:
 
@@ -90,7 +48,7 @@ And the development version from
 
 ``` r
 install.packages("remotes")
-remotes::install_github("special-uor/fxTWAPLS")
+remotes::install_github("special-uor/fxTWAPLS", "dev")
 ```
 
 ## Publications

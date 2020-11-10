@@ -7,15 +7,20 @@
 WAPLS.predict.w(WAPLSoutput, fossil_taxa)
 }
 \arguments{
-\item{WAPLSoutput}{the output of the \code{\link{WAPLS.w}} training function,
-either with or without \code{fx} correction}
+\item{WAPLSoutput}{The output of the \code{\link{WAPLS.w}} training function,
+either with or without \code{fx} correction.}
 
-\item{fossil_taxa}{fossil taxa abundance data to reconstruct past climates,
+\item{fossil_taxa}{Fossil taxa abundance data to reconstruct past climates,
 each row represents a site to be reconstructed, each column represents a
 taxon.}
 }
 \value{
-a list of the reconstruction results. \code{fit} is the fitted value.
+A list of the reconstruction results. Each element in the list is
+described below:
+\describe{
+\item{\code{fit}}{The fitted values using each number of components.}
+\item{\code{nPLS}}{The total number of components extracted.}
+}
 }
 \description{
 WA-PLS predict function

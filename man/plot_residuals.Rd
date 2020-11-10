@@ -10,16 +10,16 @@ plot_residuals(train_output, col)
 \item{train_output}{Training output, can be the output of WA-PLS, WA-PLS with
 \code{fx} correction, TWA-PLS, or TWA-PLS with \code{fx} correction}
 
-\item{col}{choose which column of the fitted value to plot, in other words,
-how many number of components you want to use}
+\item{col}{Choose which column of the fitted value to plot, in other words,
+how many number of components you want to use.}
 }
 \value{
-plotting status
+Plotting status.
 }
 \description{
 Plot the residuals, the black line is 0 line, the red line is the locally
 estimated scatterplot smoothing, which shows the degree of local
-compression
+compression.
 }
 \examples{
 \dontrun{

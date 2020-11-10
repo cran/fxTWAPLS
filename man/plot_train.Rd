@@ -8,18 +8,18 @@ plot_train(train_output, col)
 }
 \arguments{
 \item{train_output}{Training output, can be the output of WA-PLS, WA-PLS with
-\code{fx} correction, TWA-PLS, or TWA-PLS with \code{fx} correction}
+\code{fx} correction, TWA-PLS, or TWA-PLS with \code{fx} correction.}
 
-\item{col}{choose which column of the fitted value to plot, in other words,
-how many number of components you want to use}
+\item{col}{Choose which column of the fitted value to plot, in other words,
+how many number of components you want to use.}
 }
 \value{
-plotting status
+Plotting status.
 }
 \description{
 Plot the training results, the black line is the 1:1 line, the red line is
 the linear regression line to fitted and \code{x}, which shows the degree
-of overall compression
+of overall compression.
 }
 \examples{
 \dontrun{

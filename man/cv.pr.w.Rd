@@ -19,40 +19,40 @@ cv.pr.w(
 )
 }
 \arguments{
-\item{modern_taxa}{the modern taxa abundance data, each row represents a
+\item{modern_taxa}{The modern taxa abundance data, each row represents a
 sampling site, each column represents a taxon.}
 
-\item{modern_climate}{the modern climate value at each sampling site}
+\item{modern_climate}{The modern climate value at each sampling site.}
 
-\item{nPLS}{the number of components to be extracted}
+\item{nPLS}{The number of components to be extracted.}
 
-\item{trainfun}{training function you want to use, either
-\code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}}
+\item{trainfun}{Training function you want to use, either
+\code{\link{WAPLS.w}} or \code{\link{TWAPLS.w}}.}
 
-\item{predictfun}{predict function you want to use: if \code{trainfun} is
+\item{predictfun}{Predict function you want to use: if \code{trainfun} is
 \code{\link{WAPLS.w}}, then this should be \code{\link{WAPLS.predict.w}};
 if \code{trainfun} is \code{\link{TWAPLS.w}}, then this should be
-\code{\link{TWAPLS.predict.w}}}
+\code{\link{TWAPLS.predict.w}}.}
 
-\item{pseudo}{the geographically and climatically close sites to each test
-site, obtained from \code{\link{get_pseudo}} function}
+\item{pseudo}{The geographically and climatically close sites to each test
+site, obtained from \code{\link{get_pseudo}} function.}
 
-\item{usefx}{boolean flag on whether or not use \code{fx} correction.}
+\item{usefx}{Boolean flag on whether or not use \code{fx} correction.}
 
-\item{fx}{the frequency of the climate value for \code{fx} correction: if
+\item{fx}{The frequency of the climate value for \code{fx} correction: if
 \code{usefx} is FALSE, this should be \code{NA}; otherwise, this should
 be obtained from the \code{\link{fx}} function.}
 
-\item{cpus}{number of CPUs for simultaneous iterations to execute, check
+\item{cpus}{Number of CPUs for simultaneous iterations to execute, check
 \code{parallel::detectCores()} for available CPUs on your machine.}
 
-\item{test_mode}{boolean flag to execute the function with a limited number
+\item{test_mode}{Boolean flag to execute the function with a limited number
 of iterations, \code{test_it}, for testing purposes only.}
 
-\item{test_it}{number of iterations to use in the test mode}
+\item{test_it}{Number of iterations to use in the test mode.}
 }
 \value{
-leave-one-out cross validation results
+Leave-one-out cross validation results.
 }
 \description{
 Pseudo-removed leave-out cross-validation
@@ -80,20 +80,20 @@ pseudo_Tmin <- fxTWAPLS::get_pseudo(dist,
 cv_pr_Tmin <- fxTWAPLS::cv.pr.w(taxa,
                                 modern_pollen$Tmin,
                                 nPLS = 5,
-                                fxTWAPLS::TWAPLS.w,
-                                fxTWAPLS::TWAPLS.predict.w,
+                                fxTWAPLS::WAPLS.w,
+                                fxTWAPLS::WAPLS.predict.w,
                                 pseudo_Tmin,
                                 cpus = 2, # Remove the following line
                                 test_mode = test_mode)
 # Test TWAPLS
-cv_pr_t_Tmin <- fxTWAPLS::cv.pr.w(taxa,
-                                  modern_pollen$Tmin,
-                                  nPLS = 5,
-                                  fxTWAPLS::TWAPLS.w,
-                                  fxTWAPLS::TWAPLS.predict.w,
-                                  pseudo_Tmin,
-                                  cpus = 2, # Remove the following line
-                                  test_mode = test_mode)
+cv_pr_Tmin2 <- fxTWAPLS::cv.pr.w(taxa,
+                                 modern_pollen$Tmin,
+                                 nPLS = 5,
+                                 fxTWAPLS::TWAPLS.w,
+                                 fxTWAPLS::TWAPLS.predict.w,
+                                 pseudo_Tmin,
+                                 cpus = 2, # Remove the following line
+                                 test_mode = test_mode)
 }
 
 }

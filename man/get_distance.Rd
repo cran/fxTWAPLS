@@ -7,24 +7,24 @@
 get_distance(point, cpus = 4, test_mode = FALSE, test_it = 5)
 }
 \arguments{
-\item{point}{each row represents a sampling site, the first column is
-longitude and the second column is latitude, both in decimal format}
+\item{point}{Each row represents a sampling site, the first column is
+longitude and the second column is latitude, both in decimal format.}
 
-\item{cpus}{number of CPUs for simultaneous iterations to execute, check
+\item{cpus}{Number of CPUs for simultaneous iterations to execute, check
 \code{parallel::detectCores()} for available CPUs on your machine.}
 
-\item{test_mode}{boolean flag to execute the function with a limited number
+\item{test_mode}{Boolean flag to execute the function with a limited number
 of iterations, \code{test_it}, for testing purposes only.}
 
-\item{test_it}{number of iterations to use in the test mode}
+\item{test_it}{Number of iterations to use in the test mode.}
 }
 \value{
-distance matrix, the value at the \code{i-th} row, means the distance
-between the \code{i-th} sampling site and the whole sampling sites
+Distance matrix, the value at the \code{i-th} row, means the distance
+between the \code{i-th} sampling site and the whole sampling sites.
 }
 \description{
 Get the distance between points, the output will be used in
-\code{\link{get_pseudo}}
+\code{\link{get_pseudo}}.
 }
 \examples{
 \dontrun{
