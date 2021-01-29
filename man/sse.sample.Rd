@@ -123,6 +123,38 @@ sse_f_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
                                          fx = fx_Tmin,
                                          cpus = 2,
                                          seed = 1)
+                                         
+# Run with progress bar
+`\%>\%` <- magrittr::`\%>\%`
+### without fx
+sse_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
+                                       modern_climate = modern_pollen$Tmin,
+                                       fossil_taxa = core,
+                                       trainfun = fxTWAPLS::WAPLS.w,
+                                       predictfun = 
+                                         fxTWAPLS::WAPLS.predict.w,
+                                       nboot = nboot,
+                                       nPLS = 5,
+                                       nsig = 3,
+                                       usefx = FALSE,
+                                       fx = NA,
+                                       cpus = 2,
+                                       seed = 1) \%>\% fxTWAPLS::pb()
+### with fx
+sse_f_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
+                                         modern_climate = 
+                                           modern_pollen$Tmin,
+                                         fossil_taxa = core,
+                                         trainfun = fxTWAPLS::WAPLS.w,
+                                         predictfun = 
+                                           fxTWAPLS::WAPLS.predict.w,
+                                         nboot = nboot,
+                                         nPLS = 5,
+                                         nsig = 3,
+                                         usefx = TRUE,
+                                         fx = fx_Tmin,
+                                         cpus = 2,
+                                         seed = 1) \%>\% fxTWAPLS::pb()
 }
 
 }

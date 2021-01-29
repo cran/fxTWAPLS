@@ -708,6 +708,8 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 }
 
 #' Calculate Sample Specific Errors
+#' 
+#' @importFrom foreach %dopar%
 #'
 #' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
@@ -794,6 +796,38 @@ TWAPLS.predict.w <- function(TWAPLSoutput, fossil_taxa) {
 #'                                          fx = fx_Tmin,
 #'                                          cpus = 2,
 #'                                          seed = 1)
+#'                                          
+#' # Run with progress bar
+#' `%>%` <- magrittr::`%>%`
+#' ### without fx
+#' sse_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
+#'                                        modern_climate = modern_pollen$Tmin,
+#'                                        fossil_taxa = core,
+#'                                        trainfun = fxTWAPLS::WAPLS.w,
+#'                                        predictfun = 
+#'                                          fxTWAPLS::WAPLS.predict.w,
+#'                                        nboot = nboot,
+#'                                        nPLS = 5,
+#'                                        nsig = 3,
+#'                                        usefx = FALSE,
+#'                                        fx = NA,
+#'                                        cpus = 2,
+#'                                        seed = 1) %>% fxTWAPLS::pb()
+#' ### with fx
+#' sse_f_Tmin_WAPLS <- fxTWAPLS::sse.sample(modern_taxa = taxa,
+#'                                          modern_climate = 
+#'                                            modern_pollen$Tmin,
+#'                                          fossil_taxa = core,
+#'                                          trainfun = fxTWAPLS::WAPLS.w,
+#'                                          predictfun = 
+#'                                            fxTWAPLS::WAPLS.predict.w,
+#'                                          nboot = nboot,
+#'                                          nPLS = 5,
+#'                                          nsig = 3,
+#'                                          usefx = TRUE,
+#'                                          fx = fx_Tmin,
+#'                                          cpus = 2,
+#'                                          seed = 1) %>% fxTWAPLS::pb()
 #' }
 #' 
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, 
@@ -819,12 +853,12 @@ sse.sample <- function(modern_taxa,
   cpus <- ifelse(cpus > avail_cpus, avail_cpus, cpus)
   
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus)
-  doParallel::registerDoParallel(cl)
-  
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
-  # `%dorng%` <- doRNG::`%dorng%`
+  # cl <- parallel::makeCluster(cpus)
+  # on.exit(parallel::stopCluster(cl), add = TRUE) # Stop cluster
+  doFuture::registerDoFuture()
+  # oplan <- future::plan(future::cluster, workers = cl)
+  oplan <- future::plan(future::multisession, workers = cpus)
+  on.exit(future::plan(oplan), add = TRUE)
   
   # Set seed for reproducibility
   set.seed(seed)
@@ -841,6 +875,8 @@ sse.sample <- function(modern_taxa,
   if (test_mode) {
     idx <- 1:test_it
   }
+  # Set up progress API
+  p <- progressr::progressor(along = idx)
   xboot <- foreach::foreach(i = idx,
                             .combine = cbind) %dopar% {
                               tryCatch({
@@ -870,11 +906,13 @@ sse.sample <- function(modern_taxa,
                                 }
                                 
                                 # Make reconstruction
-                                predictfun(mod, 
+                                out <- 
+                                  predictfun(mod, 
                                            fossil_taxa[, col_not0])$fit[, nsig]
+                                p()
+                                out
                               }, error=function(e){})
                             }
-  parallel::stopCluster(cl) # Stop cluster
   
   avg.xboot <- rowMeans(xboot, na.rm = TRUE)
   v1 <- boot.mean.square <- rowMeans((xboot - avg.xboot) ^ 2 , na.rm = TRUE)
@@ -886,7 +924,7 @@ sse.sample <- function(modern_taxa,
 #' Leave-one-out cross-validation as 
 #'     \code{rioja} (\url{https://cran.r-project.org/package=rioja}).
 #' 
-#' @importFrom foreach `%dopar%`
+#' @importFrom foreach %dopar%
 #' 
 #' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
@@ -949,6 +987,27 @@ sse.sample <- function(modern_taxa,
 #'                             fx = fx_Tmin,
 #'                             cpus = 2, # Remove the following line
 #'                             test_mode = test_mode)  
+#' 
+#' # Run with progress bar
+#' `%>%` <- magrittr::`%>%`
+#' ### without fx
+#' cv_Tmin <- fxTWAPLS::cv.w(taxa,
+#'                           modern_pollen$Tmin,
+#'                           nPLS = 5,
+#'                           fxTWAPLS::WAPLS.w,
+#'                           fxTWAPLS::WAPLS.predict.w,
+#'                           cpus = 2, # Remove the following line
+#'                           test_mode = test_mode) %>% fxTWAPLS::pb()
+#' ### with fx
+#' cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
+#'                             modern_pollen$Tmin,
+#'                             nPLS = 5,
+#'                             fxTWAPLS::WAPLS.w,
+#'                             fxTWAPLS::WAPLS.predict.w,
+#'                             usefx = TRUE,
+#'                             fx = fx_Tmin,
+#'                             cpus = 2, # Remove the following line
+#'                             test_mode = test_mode) %>% fxTWAPLS::pb()
 #' }
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, 
 #'     \code{\link{TWAPLS.predict.w}}, \code{\link{WAPLS.w}}, and 
@@ -972,11 +1031,12 @@ cv.w <- function(modern_taxa,
   cpus <- ifelse(cpus > avail_cpus, avail_cpus, cpus)
   
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
-  doParallel::registerDoParallel(cl)
-
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # cl <- parallel::makeCluster(cpus)
+  # on.exit(parallel::stopCluster(cl), add = TRUE) # Stop cluster
+  doFuture::registerDoFuture()
+  # oplan <- future::plan(future::cluster, workers = cl)
+  oplan <- future::plan(future::multisession, workers = cpus)
+  on.exit(future::plan(oplan), add = TRUE)
   
   # Create list of indices to loop through
   idx <- seq_len(length(x))
@@ -984,6 +1044,8 @@ cv.w <- function(modern_taxa,
   if (test_mode) {
     idx <- 1:test_it
   }
+  # Set up progress API
+  p <- progressr::progressor(along = idx)
   all.cv.out <- foreach::foreach(i = idx,
                                  .combine = rbind, #comb_pb(max(idx)),
                                  .verbose = FALSE) %dopar% {
@@ -993,9 +1055,9 @@ cv.w <- function(modern_taxa,
                                                    usefx, 
                                                    fx[-i])
                                    xnew <- predictfun(fit, y[i, ])[["fit"]]
+                                   p()
                                    data.frame(x[i], xnew)
                                  }
-  parallel::stopCluster(cl) # Stop cluster
   colnames(all.cv.out) <- c("test.x", paste0("comp", 1:nPLS))
   return(all.cv.out)
 }
@@ -1005,7 +1067,7 @@ cv.w <- function(modern_taxa,
 #' Get the distance between points, the output will be used in 
 #'     \code{\link{get_pseudo}}.
 #' 
-#' @importFrom foreach `%dopar%` 
+#' @importFrom foreach %dopar%
 #' 
 #' @param point Each row represents a sampling site, the first column is 
 #'     longitude and the second column is latitude, both in decimal format.
@@ -1029,31 +1091,41 @@ cv.w <- function(modern_taxa,
 #' dist <- fxTWAPLS::get_distance(point, 
 #'                                cpus = 2, # Remove the following line
 #'                                test_mode = test_mode)
+#' # Run with progress bar
+#' `%>%` <- magrittr::`%>%`
+#' dist <- fxTWAPLS::get_distance(point, 
+#'                                cpus = 2, # Remove the following line
+#'                                test_mode = test_mode) %>% fxTWAPLS::pb()
 #' }
 #' 
 #' @seealso \code{\link{get_pseudo}}
 get_distance <- function(point, cpus = 4, test_mode = FALSE, test_it = 5) {
   i <- NULL # Local binding
   colnames(point) <- c("Long", "Lat")
-  tictoc::tic("Distance between points")
   
   # Check the number of CPUs does not exceed the availability
   avail_cpus <- parallel::detectCores() - 1
   cpus <- ifelse(cpus > avail_cpus, avail_cpus, cpus)
   
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
-  doParallel::registerDoParallel(cl)
-  
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # cl <- parallel::makeCluster(cpus)
+  # on.exit(parallel::stopCluster(cl), add = TRUE) # Stop cluster
+  doFuture::registerDoFuture()
+  # oplan <- future::plan(future::cluster, workers = cl)
+  oplan <- future::plan(future::multisession, workers = cpus)
+  on.exit(future::plan(oplan), add = TRUE)
   
   # Create list of indices to loop through
   idx <- seq_len(nrow(point))
+  
   # Reduce the list of indices, if test_mode = TRUE
   if (test_mode) {
     idx <- 1:test_it
   }
+  
+  # Set up progress API
+  p <- progressr::progressor(along = idx)
+  
   dist <- foreach::foreach(i = idx,
                            .combine = rbind) %dopar% {
                              tmp <- rep(0, nrow(point))
@@ -1066,11 +1138,9 @@ get_distance <- function(point, cpus = 4, test_mode = FALSE, test_it = 5) {
                                                           c(lon2, lat2),
                                                           fun = geosphere::distHaversine)
                              }
+                             p()
                              tmp
                            }
-  
-  parallel::stopCluster(cl) # Stop cluster
-  tictoc::toc()
   return(dist)
 }
 
@@ -1080,6 +1150,8 @@ get_distance <- function(point, cpus = 4, test_mode = FALSE, test_it = 5) {
 #'     test site, which could result in pseudo-replication and inflate the 
 #'     cross-validation statistics. The output will be used in 
 #'     \code{\link{cv.pr.w}}.
+#' 
+#' @importFrom foreach %dopar%
 #'
 #' @param dist Distance matrix which contains the distance from other sites.
 #' @param x The modern climate values.
@@ -1106,6 +1178,12 @@ get_distance <- function(point, cpus = 4, test_mode = FALSE, test_it = 5) {
 #'                                     modern_pollen$Tmin, 
 #'                                     cpus = 2, # Remove the following line
 #'                                     test_mode = test_mode)
+#' # Run with progress bar
+#' `%>%` <- magrittr::`%>%`
+#' pseudo_Tmin <- fxTWAPLS::get_pseudo(dist, 
+#'                                     modern_pollen$Tmin, 
+#'                                     cpus = 2, # Remove the following line
+#'                                     test_mode = test_mode) %>% fxTWAPLS::pb()
 #' }
 #' @seealso \code{\link{get_distance}}
 get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
@@ -1115,11 +1193,12 @@ get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
   cpus <- ifelse(cpus > avail_cpus, avail_cpus, cpus)
   
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
-  doParallel::registerDoParallel(cl)
-  
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # cl <- parallel::makeCluster(cpus)
+  # on.exit(parallel::stopCluster(cl), add = TRUE) # Stop cluster
+  doFuture::registerDoFuture()
+  # oplan <- future::plan(future::cluster, workers = cl)
+  oplan <- future::plan(future::multisession, workers = cpus)
+  on.exit(future::plan(oplan), add = TRUE)
   
   # Create list of indices to loop through
   idx <- seq_len(length(x))
@@ -1127,15 +1206,21 @@ get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
   if (test_mode) {
     idx <- 1:test_it
   }
+  
+  # Set up progress API
+  p <- progressr::progressor(along = idx)
   pseudo <- foreach::foreach(i = idx) %dopar% {
-    which(dist[i, ] < 50000 & abs(x - x[i]) < 0.02 * (max(x) - min(x)))
+    out <- which(dist[i, ] < 50000 & abs(x - x[i]) < 0.02 * (max(x) - min(x)))
+    p()
+    out
   }
-  parallel::stopCluster(cl) # Stop cluster
   return(pseudo)
 }
 
 #' Pseudo-removed leave-out cross-validation
-#'
+#' 
+#' @importFrom foreach %dopar%
+#' 
 #' @param modern_taxa The modern taxa abundance data, each row represents a 
 #'     sampling site, each column represents a taxon.
 #' @param modern_climate The modern climate value at each sampling site.
@@ -1198,6 +1283,27 @@ get_pseudo <- function(dist, x, cpus = 4, test_mode = FALSE, test_it = 5) {
 #'                                  pseudo_Tmin,
 #'                                  cpus = 2, # Remove the following line
 #'                                  test_mode = test_mode)
+#' 
+#' # Run with progress bar
+#' `%>%` <- magrittr::`%>%`
+#' ## Test WAPLS
+#' cv_pr_Tmin <- fxTWAPLS::cv.pr.w(taxa,
+#'                                 modern_pollen$Tmin,
+#'                                 nPLS = 5,
+#'                                 fxTWAPLS::WAPLS.w,
+#'                                 fxTWAPLS::WAPLS.predict.w,
+#'                                 pseudo_Tmin,
+#'                                 cpus = 2, # Remove the following line
+#'                                 test_mode = test_mode) %>% fxTWAPLS::pb()
+#' ## Test TWAPLS
+#' cv_pr_Tmin2 <- fxTWAPLS::cv.pr.w(taxa,
+#'                                  modern_pollen$Tmin,
+#'                                  nPLS = 5,
+#'                                  fxTWAPLS::TWAPLS.w,
+#'                                  fxTWAPLS::TWAPLS.predict.w,
+#'                                  pseudo_Tmin,
+#'                                  cpus = 2, # Remove the following line
+#'                                  test_mode = test_mode) %>% fxTWAPLS::pb()
 #' }
 #' 
 #' @seealso \code{\link{fx}}, \code{\link{TWAPLS.w}}, 
@@ -1223,11 +1329,12 @@ cv.pr.w <- function(modern_taxa,
   cpus <- ifelse(cpus > avail_cpus, avail_cpus, cpus)
   
   # Start parallel backend
-  cl <- parallel::makeCluster(cpus, setup_strategy = "sequential")
-  doParallel::registerDoParallel(cl)
-  
-  # Load binary operator for backend
-  `%dopar%` <- foreach::`%dopar%`
+  # cl <- parallel::makeCluster(cpus)
+  # on.exit(parallel::stopCluster(cl), add = TRUE) # Stop cluster
+  doFuture::registerDoFuture()
+  # oplan <- future::plan(future::cluster, workers = cl)
+  oplan <- future::plan(future::multisession, workers = cpus)
+  on.exit(future::plan(oplan), add = TRUE)
   
   # Create list of indices to loop through
   idx <- seq_len(length(x))
@@ -1235,6 +1342,8 @@ cv.pr.w <- function(modern_taxa,
   if (test_mode) {
     idx <- 1:test_it
   }
+  # Set up progress API
+  p <- progressr::progressor(along = idx)
   all.cv.out <- foreach::foreach(i = idx,
                                  .combine = rbind) %dopar% {
                                    leave <- unlist(pseudo[i])
@@ -1244,9 +1353,9 @@ cv.pr.w <- function(modern_taxa,
                                                    usefx, 
                                                    fx[-leave])
                                    xnew <- predictfun(fit, y[i, ])[["fit"]]
+                                   p()
                                    data.frame(x[i], xnew)
                                  }
-  parallel::stopCluster(cl) # Stop cluster
   
   # assign column names to all.cv.out
   colnames(all.cv.out) <- c("test.x", paste0("comp", 1:nPLS))
@@ -1474,7 +1583,6 @@ plot_train <- function(train_output, col) {
     ggplot2::geom_smooth(method = 'lm',
                          formula = y ~ x,
                          color = 'red')
-  return(TRUE)
 }
 
 #' Plot the residuals
@@ -1543,7 +1651,7 @@ plot_residuals <- function(train_output, col) {
     ggplot2::geom_abline(slope = 0, intercept = 0) + 
     ggplot2::xlim(min(x), max(x)) + ggplot2::ylim(-maxr, maxr) +
     ggplot2::geom_smooth(method = 'loess',
-                         color = 'red',
+                         color = 'red', 
+                         formula = "y ~ x",
                          se = FALSE)
-  return(TRUE)
 }

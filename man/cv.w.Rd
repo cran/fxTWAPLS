@@ -92,6 +92,27 @@ cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
                             fx = fx_Tmin,
                             cpus = 2, # Remove the following line
                             test_mode = test_mode)  
+
+# Run with progress bar
+`\%>\%` <- magrittr::`\%>\%`
+### without fx
+cv_Tmin <- fxTWAPLS::cv.w(taxa,
+                          modern_pollen$Tmin,
+                          nPLS = 5,
+                          fxTWAPLS::WAPLS.w,
+                          fxTWAPLS::WAPLS.predict.w,
+                          cpus = 2, # Remove the following line
+                          test_mode = test_mode) \%>\% fxTWAPLS::pb()
+### with fx
+cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
+                            modern_pollen$Tmin,
+                            nPLS = 5,
+                            fxTWAPLS::WAPLS.w,
+                            fxTWAPLS::WAPLS.predict.w,
+                            usefx = TRUE,
+                            fx = fx_Tmin,
+                            cpus = 2, # Remove the following line
+                            test_mode = test_mode) \%>\% fxTWAPLS::pb()
 }
 }
 \seealso{
