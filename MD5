@@ -1,8 +1,8 @@
-cb12d25c73c99ce9ccbd0683a78fd223 *DESCRIPTION
-80c2b6de2a4669a5da61bad020d6d2de *NAMESPACE
-cd437d438ce9838bd43233d5e5eb72da *NEWS.md
+00db3fe91afc340ffff1ed6f917d81fd *DESCRIPTION
+786cfcfb065bd460d518d673b5d75b15 *NAMESPACE
+f4a6f1dd5103a885f823afe42d6c1b3f *NEWS.md
 6833e299c70646ce622e040ec72bc066 *R/fxTWAPLS.R
-33b9e232a4b8a1c761397d2525816e1f *R/utils.R
+28cb9c938dc163aa0c5c8771e8013064 *R/utils.R
 8a19fd3e62f886bed7f07aea46af5c06 *README.md
 8a92002a820efba5be4068eea5749623 *inst/CITATION
 ddae552decd07c8e97e0f4c38458dd85 *man/TWAPLS.predict.w.Rd
@@ -20,5 +20,3 @@ a8e776c3a92f67774ca18ae4e31ff7b4 *man/pb.Rd
 3ed3e805e0630c573fce496ad3f77172 *man/plot_train.Rd
 38a71b22c0ead3ea5645ff76013bdbb0 *man/rand.t.test.w.Rd
 817b078c90b290da21f8735d20869418 *man/sse.sample.Rd
-d0242b3a25267ca0209f55f0a6c8e197 *tests/testthat.R
-78eb8d1f9ef9de4a1377f6617bfcc4de *tests/testthat/test-utils.R

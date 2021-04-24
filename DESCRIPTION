@@ -1,6 +1,6 @@
 Package: fxTWAPLS
 Title: An Improved Version of WA-PLS
-Version: 0.0.5
+Version: 0.0.6
 Authors@R: c(
     person(given = "Mengmeng",
            family = "Liu",
@@ -37,19 +37,18 @@ Description: The goal of this package is to provide an improved version of
     pseudo-replication.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 URL: https://github.com/special-uor/fxTWAPLS/,
         https://special-uor.github.io/fxTWAPLS/,
         https://research.reading.ac.uk/palaeoclimate/
 BugReports: https://github.com/special-uor/fxTWAPLS/issues/
 Imports: doFuture, foreach, future, geosphere, ggplot2, MASS, parallel,
-        progress, progressr
-Suggests: magrittr, scales, testthat, tictoc
+        progressr
+Suggests: magrittr, progress, scales, tictoc
 Depends: R (>= 3.6)
 RoxygenNote: 7.1.1
 Language: en-GB
 NeedsCompilation: no
-Packaged: 2021-01-29 11:54:32 UTC; roberto.villegas-diaz
+Packaged: 2021-04-24 17:48:20 UTC; roberto.villegas-diaz
 Author: Mengmeng Liu [aut] (<https://orcid.org/0000-0001-6250-0148>),
   Iain Colin Prentice [aut] (<https://orcid.org/0000-0002-1296-6764>),
   Cajo J. F. ter Braak [aut] (<https://orcid.org/0000-0002-0414-8745>),
@@ -59,4 +58,4 @@ Author: Mengmeng Liu [aut] (<https://orcid.org/0000-0001-6250-0148>),
   SPECIAL Research Group @ University of Reading [cph]
 Maintainer: Roberto Villegas-Diaz <r.villegas-diaz@reading.ac.uk>
 Repository: CRAN
-Date/Publication: 2021-01-29 12:10:02 UTC
+Date/Publication: 2021-04-24 18:00:02 UTC
