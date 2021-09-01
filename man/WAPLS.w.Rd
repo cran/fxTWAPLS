@@ -4,7 +4,14 @@
 \alias{WAPLS.w}
 \title{WA-PLS training function}
 \usage{
-WAPLS.w(modern_taxa, modern_climate, nPLS = 5, usefx = FALSE, fx = NA)
+WAPLS.w(
+  modern_taxa,
+  modern_climate,
+  nPLS = 5,
+  usefx = FALSE,
+  fx_method = "bin",
+  bin = NA
+)
 }
 \arguments{
 \item{modern_taxa}{The modern taxa abundance data, each row represents a
@@ -16,9 +23,13 @@ sampling site, each column represents a taxon.}
 
 \item{usefx}{Boolean flag on whether or not use \code{fx} correction.}
 
-\item{fx}{The frequency of the climate value for \code{fx} correction: if
-\code{usefx = FALSE}, this should be \code{NA}; otherwise, this should
-be obtained from the \code{\link{fx}} function.}
+\item{fx_method}{Binned or p-spline smoothed \code{fx} correction: if
+\code{usefx = FALSE}, this should be \code{NA}; otherwise,
+\code{\link{fx}} function will be used when choosing "bin";
+\code{\link{fx_pspline}} function will be used when choosing "pspline".}
+
+\item{bin}{Binwidth to get fx, needed for both binned and p-splined method.
+if \code{usefx = FALSE}, this should be \code{NA};}
 }
 \value{
 A list of the training results, which will be used by the predict
@@ -44,7 +55,8 @@ regression).}
 }
 }
 \description{
-WA-PLS training function, which can perform \code{fx} correction.
+WA-PLS training function, which can perform \code{fx} correction. 1/fx^2
+correction will be applied at step 7.
 }
 \examples{
 \dontrun{
@@ -56,18 +68,14 @@ taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
-# Get the frequency of each climate variable fx
-fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
-fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)
-fx_alpha <- fxTWAPLS::fx(modern_pollen$alpha, bin = 0.002)
-
 # MTCO
 fit_Tmin <- fxTWAPLS::WAPLS.w(taxa, modern_pollen$Tmin, nPLS = 5)
 fit_f_Tmin <- fxTWAPLS::WAPLS.w(taxa, 
                                 modern_pollen$Tmin, 
                                 nPLS = 5, 
                                 usefx = TRUE, 
-                                fx = fx_Tmin)
+                                fx_method = "bin",
+                                bin = 0.02)
 }
 
 }

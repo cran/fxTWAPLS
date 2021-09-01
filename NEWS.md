@@ -1,3 +1,9 @@
+# fxTWAPLS 0.0.7
+
+* Made fx correction a build-in function.
+* Added p-spline smoothed fx estimation.
+* Added taxa-stripping-out strategy to cross-validation functions.
+
 # fxTWAPLS 0.0.6
 
 * Removed unused benchmark functions and test.

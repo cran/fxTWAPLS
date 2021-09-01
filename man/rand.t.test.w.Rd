@@ -57,38 +57,31 @@ taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
-# Get the frequency of each climate variable fx
-fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
-fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)
-fx_alpha <- fxTWAPLS::fx(modern_pollen$alpha, bin = 0.002)
-
-# MTCO
-## fx
-fit_Tmin <- fxTWAPLS::WAPLS.w(taxa, modern_pollen$Tmin, nPLS = 5)
 ## LOOCV
 test_mode <- TRUE # It should be set to FALSE before running
 ### without fx
-cv_Tmin <- fxTWAPLS::cv.w(taxa,
-                          modern_pollen$Tmin,
-                          nPLS = 5,
-                          fxTWAPLS::WAPLS.w,
-                          fxTWAPLS::WAPLS.predict.w,
-                          cpus = 2, # Remove the following line
-                          test_mode = test_mode)
-### with fx
-cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
+cv_t_Tmin <- fxTWAPLS::cv.w(taxa,
                             modern_pollen$Tmin,
                             nPLS = 5,
-                            fxTWAPLS::WAPLS.w,
-                            fxTWAPLS::WAPLS.predict.w,
-                            usefx = TRUE,
-                            fx = fx_Tmin,
+                            fxTWAPLS::TWAPLS.w,
+                            fxTWAPLS::TWAPLS.predict.w,
                             cpus = 2, # Remove the following line
-                            test_mode = test_mode)
+                            test_mode = test_mode) \%>\% fxTWAPLS::pb()
+### with fx
+cv_tf_Tmin <- fxTWAPLS::cv.w(taxa,
+                             modern_pollen$Tmin,
+                             nPLS = 5,
+                             fxTWAPLS::TWAPLS.w,
+                             fxTWAPLS::TWAPLS.predict.w,
+                             usefx = TRUE,
+                             fx_method = "bin",
+                             bin = 0.02,
+                             cpus = 2, # Remove the following line
+                             test_mode = test_mode) \%>\% fxTWAPLS::pb()
                             
 ## Random t-test
-rand_Tmin <- fxTWAPLS::rand.t.test.w(cv_Tmin, n.perm = 999)
-rand_f_Tmin <- fxTWAPLS::rand.t.test.w(cv_f_Tmin, n.perm = 999)
+rand_t_Tmin <- fxTWAPLS::rand.t.test.w(cv_t_Tmin, n.perm = 999)
+rand_tf_Tmin <- fxTWAPLS::rand.t.test.w(cv_tf_Tmin, n.perm = 999)
 }
 
 }

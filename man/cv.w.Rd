@@ -11,7 +11,8 @@ cv.w(
   trainfun,
   predictfun,
   usefx = FALSE,
-  fx = NA,
+  fx_method = "bin",
+  bin = NA,
   cpus = 4,
   test_mode = FALSE,
   test_it = 5
@@ -35,9 +36,13 @@ if \code{trainfun} is \code{\link{TWAPLS.w}}, then this should be
 
 \item{usefx}{Boolean flag on whether or not use \code{fx} correction.}
 
-\item{fx}{The frequency of the climate value for \code{fx} correction: if
-\code{usefx = FALSE}, this should be \code{NA}; otherwise, this should
-be obtained from the \code{\link{fx}} function.}
+\item{fx_method}{Binned or p-spline smoothed \code{fx} correction: if
+\code{usefx = FALSE}, this should be \code{NA}; otherwise,
+\code{\link{fx}} function will be used when choosing "bin";
+\code{\link{fx_pspline}} function will be used when choosing "pspline".}
+
+\item{bin}{Binwidth to get fx, needed for both binned and p-splined method.
+if \code{usefx = FALSE}, this should be \code{NA};}
 
 \item{cpus}{Number of CPUs for simultaneous iterations to execute, check
 \code{parallel::detectCores()} for available CPUs on your machine.}
@@ -64,55 +69,49 @@ taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
-# Get the frequency of each climate variable fx
-fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
-fx_gdd <- fxTWAPLS::fx(modern_pollen$gdd, bin = 20)
-fx_alpha <- fxTWAPLS::fx(modern_pollen$alpha, bin = 0.002)
-
-# MTCO
-## fx
-fit_Tmin <- fxTWAPLS::WAPLS.w(taxa, modern_pollen$Tmin, nPLS = 5)
 ## LOOCV
 test_mode <- TRUE # It should be set to FALSE before running
 ### without fx
-cv_Tmin <- fxTWAPLS::cv.w(taxa,
-                          modern_pollen$Tmin,
-                          nPLS = 5,
-                          fxTWAPLS::WAPLS.w,
-                          fxTWAPLS::WAPLS.predict.w,
-                          cpus = 2, # Remove the following line
-                          test_mode = test_mode)
-### with fx
-cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
+cv_t_Tmin <- fxTWAPLS::cv.w(taxa,
                             modern_pollen$Tmin,
                             nPLS = 5,
-                            fxTWAPLS::WAPLS.w,
-                            fxTWAPLS::WAPLS.predict.w,
-                            usefx = TRUE,
-                            fx = fx_Tmin,
+                            fxTWAPLS::TWAPLS.w,
+                            fxTWAPLS::TWAPLS.predict.w,
                             cpus = 2, # Remove the following line
-                            test_mode = test_mode)  
+                            test_mode = test_mode)
+### with fx
+cv_tf_Tmin <- fxTWAPLS::cv.w(taxa,
+                             modern_pollen$Tmin,
+                             nPLS = 5,
+                             fxTWAPLS::TWAPLS.w,
+                             fxTWAPLS::TWAPLS.predict.w,
+                             usefx = TRUE,
+                             fx_method = "bin",
+                             bin = 0.02,
+                             cpus = 2, # Remove the following line
+                             test_mode = test_mode)  
 
 # Run with progress bar
 `\%>\%` <- magrittr::`\%>\%`
 ### without fx
-cv_Tmin <- fxTWAPLS::cv.w(taxa,
-                          modern_pollen$Tmin,
-                          nPLS = 5,
-                          fxTWAPLS::WAPLS.w,
-                          fxTWAPLS::WAPLS.predict.w,
-                          cpus = 2, # Remove the following line
-                          test_mode = test_mode) \%>\% fxTWAPLS::pb()
-### with fx
-cv_f_Tmin <- fxTWAPLS::cv.w(taxa,
+cv_t_Tmin <- fxTWAPLS::cv.w(taxa,
                             modern_pollen$Tmin,
                             nPLS = 5,
-                            fxTWAPLS::WAPLS.w,
-                            fxTWAPLS::WAPLS.predict.w,
-                            usefx = TRUE,
-                            fx = fx_Tmin,
+                            fxTWAPLS::TWAPLS.w,
+                            fxTWAPLS::TWAPLS.predict.w,
                             cpus = 2, # Remove the following line
                             test_mode = test_mode) \%>\% fxTWAPLS::pb()
+### with fx
+cv_tf_Tmin <- fxTWAPLS::cv.w(taxa,
+                             modern_pollen$Tmin,
+                             nPLS = 5,
+                             fxTWAPLS::TWAPLS.w,
+                             fxTWAPLS::TWAPLS.predict.w,
+                             usefx = TRUE,
+                             fx_method = "bin",
+                             bin = 0.02,
+                             cpus = 2, # Remove the following line
+                             test_mode = test_mode) \%>\% fxTWAPLS::pb()
 }
 }
 \seealso{
