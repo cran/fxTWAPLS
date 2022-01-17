@@ -2,8 +2,10 @@
 
 export(TWAPLS.predict.w)
 export(TWAPLS.w)
+export(TWAPLS.w2)
 export(WAPLS.predict.w)
 export(WAPLS.w)
+export(WAPLS.w2)
 export(cv.pr.w)
 export(cv.w)
 export(fx)

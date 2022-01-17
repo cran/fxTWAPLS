@@ -1,3 +1,9 @@
+# fxTWAPLS 0.1.0
+* New minor version.
+* Added new versions for the functions WAPLS (`WAPLS.w2`) and TWAPLS 
+(`TWAPLS.w2`), both functions use the correction `1/fx` instead of `1/fx^2` in
+steps 2 and 7.
+
 # fxTWAPLS 0.0.7
 
 * Made fx correction a build-in function.

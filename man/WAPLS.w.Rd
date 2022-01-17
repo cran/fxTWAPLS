@@ -55,8 +55,8 @@ regression).}
 }
 }
 \description{
-WA-PLS training function, which can perform \code{fx} correction. 1/fx^2
-correction will be applied at step 7.
+WA-PLS training function, which can perform \code{fx} correction.
+\code{1/fx^2} correction will be applied at step 7.
 }
 \examples{
 \dontrun{

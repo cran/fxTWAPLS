@@ -6,13 +6,7 @@
 \alias{fxTWAPLS-package}
 \title{fxTWAPLS: An Improved Version of WA-PLS}
 \description{
-The goal of this package is to provide an improved version of 
-    WA-PLS (Weighted Averaging Partial Least Squares) by including the 
-    tolerances of taxa and the frequency of the sampled climate variable. 
-    This package also provides a way of leave-out cross-validation that 
-    removes both the test site and sites that are both geographically 
-    close and climatically close for each cycle, to avoid the risk of 
-    pseudo-replication.
+The goal of this package is to provide an improved version of WA-PLS (Weighted Averaging Partial Least Squares) by including the tolerances of taxa and the frequency of the sampled climate variable. This package also provides a way of leave-out cross-validation that removes both the test site and sites that are both geographically close and climatically close for each cycle, to avoid the risk of pseudo-replication.
 }
 \seealso{
 Useful links:
