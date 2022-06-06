@@ -7,12 +7,12 @@
 <!-- badges: start -->
 <!-- [![](https://img.shields.io/github/languages/code-size/special-uor/fxTWAPLS.svg)](https://github.com/special-uor/fxTWAPLS) -->
 
-[![](https://img.shields.io/badge/devel%20version-0.1.0-yellow.svg)](https://github.com/special-uor/fxTWAPLS)
+[![](https://img.shields.io/badge/devel%20version-0.1.1-yellow.svg)](https://github.com/special-uor/fxTWAPLS)
 [![](https://www.r-pkg.org/badges/version/fxTWAPLS?color=black)](https://cran.r-project.org/package=fxTWAPLS)
 [![R build
 status](https://github.com/special-uor/fxTWAPLS/workflows/R-CMD-check/badge.svg)](https://github.com/special-uor/fxTWAPLS/actions)
 [![](https://img.shields.io/badge/doi-10.1098/rspa.2020.0346-blue.svg)](https://doi.org/10.1098/rspa.2020.0346)
-<!-- [![](https://codecov.io/gh/special-uor/fxTWAPLS/branch/master/graph/badge.svg?token=Q6SYL7AOGR)](https://codecov.io/gh/special-uor/fxTWAPLS) -->
+<!-- [![](https://app.codecov.io/gh/special-uor/fxTWAPLS/branch/master/graph/badge.svg?token=Q6SYL7AOGR)](https://app.codecov.io/gh/special-uor/fxTWAPLS) -->
 <!-- [![R build status](https://github.com/special-uor/fxTWAPLS/workflows/R-CMD-check/badge.svg)](https://github.com/special-uor/fxTWAPLS/actions) -->
 <!-- [![CRAN status](https://www.r-pkg.org/badges/version/fxTWAPLS)](https://CRAN.R-project.org/package=fxTWAPLS) -->
 <!-- badges: end -->
@@ -52,8 +52,8 @@ remotes::install_github("special-uor/fxTWAPLS", "dev")
 
 -   Liu Mengmeng, Prentice Iain Colin, ter Braak Cajo J. F., Harrison
     Sandy P.. 2020 An improved statistical approach for reconstructing
-    past climates from biotic assemblages. *Proc. R. Soc. A.* **476**:
-    20200346. <https://doi.org/10.1098/rspa.2020.0346> -
+    past climates from biotic assemblages. *Proc. R. Soc. A.*
+    **476**: 20200346. <https://doi.org/10.1098/rspa.2020.0346> -
     [`fxTWAPLS v0.0.2`](https://github.com/special-uor/fxTWAPLS/releases/tag/v0.0.2/)
 
 ``` r

@@ -1,9 +1,9 @@
-b54ef94a7ceab16353966a11a9f813ce *DESCRIPTION
+23053026027709747cf3dd9f8c093da6 *DESCRIPTION
 e4b87125e0d1e45d912c8bcc63cb221b *NAMESPACE
-62838cf4ac4603e1d7c2e6d494bf6a58 *NEWS.md
+857d291b154843d78c93fafbf3fe7570 *NEWS.md
 03f3dff7d23d0f17c0639c39492672ee *R/fxTWAPLS.R
 28cb9c938dc163aa0c5c8771e8013064 *R/utils.R
-7e2528e1f10461589394d5264b15c1e7 *README.md
+4f045e9db2ec092c3de8738aa835b7d4 *README.md
 8a92002a820efba5be4068eea5749623 *inst/CITATION
 1d54d9c5a8c355c6840dad38ea923f43 *man/TWAPLS.predict.w.Rd
 1b1286cc4851065c617639cf80a244b9 *man/TWAPLS.w.Rd
@@ -14,11 +14,11 @@ db1b2d4573a7b8b758dfb7177924f9e3 *man/WAPLS.predict.w.Rd
 a90a3399c1e086d049da883a04000231 *man/cv.pr.w.Rd
 007e3650e4bd944ad09ec94028588411 *man/cv.w.Rd
 6318f4feeae6d4d8eeb05d763f95d526 *man/fx.Rd
-ab90566e66c7e5d1ce06f8b344f44a20 *man/fxTWAPLS-package.Rd
+b15ed4106207fdbe0db48b5831d8b40d *man/fxTWAPLS-package.Rd
 551bf6e5f6033a58566f8ed5dd1f69f5 *man/fx_pspline.Rd
 b109e3252435e48c62da6ded43c43ea9 *man/get_distance.Rd
 19def64d9a974acca3a2031fc6537223 *man/get_pseudo.Rd
-a8e776c3a92f67774ca18ae4e31ff7b4 *man/pb.Rd
+813bddfb94f1bde93ec80e4656265c2c *man/pb.Rd
 ae2a6443c01c590a4506bf848ffee515 *man/plot_residuals.Rd
 a8f0f0eebcf9f32e42a600d06bd4f728 *man/plot_train.Rd
 4fe5b0abaf3f44e0e4ec7b8aa27be64a *man/rand.t.test.w.Rd
