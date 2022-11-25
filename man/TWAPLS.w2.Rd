@@ -62,23 +62,22 @@ TWA-PLS training function, which can perform \code{fx} correction.
 \dontrun{
 # Load modern pollen data
 modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-                                      
+
 # Extract taxa
 taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
-# Get the frequency of each climate variable fx
-fx_Tmin <- fxTWAPLS::fx(modern_pollen$Tmin, bin = 0.02)
-
-# MTCO
+# Training
 fit_t_Tmin2 <- fxTWAPLS::TWAPLS.w2(taxa, modern_pollen$Tmin, nPLS = 5)
-fit_tf_Tmin2 <- fxTWAPLS::TWAPLS.w2(taxa, 
-                                    modern_pollen$Tmin, 
-                                    nPLS = 5, 
-                                    usefx = TRUE, 
-                                    fx_method = "bin",
-                                    bin = 0.02)
+fit_tf_Tmin2 <- fxTWAPLS::TWAPLS.w2(
+  taxa,
+  modern_pollen$Tmin,
+  nPLS = 5,
+  usefx = TRUE,
+  fx_method = "bin",
+  bin = 0.02
+)
 }
 
 }

@@ -25,33 +25,23 @@ of overall compression.
 \dontrun{
 # Load modern pollen data
 modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-                                      
+
 # Extract taxa
 taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
 taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
-# MTCO
-## WAPLS and fxWAPLS
-fit_Tmin <- fxTWAPLS::WAPLS.w(taxa, modern_pollen$Tmin, nPLS = 5)
-fit_f_Tmin <- fxTWAPLS::WAPLS.w(taxa, 
-                                modern_pollen$Tmin, 
-                                nPLS = 5, 
-                                usefx = TRUE, 
-                                fx_method = "bin",
-                                bin = 0.02)
-## TWAPLS and fxTWAPLS
-fit_t_Tmin <- fxTWAPLS::TWAPLS.w(taxa, modern_pollen$Tmin, nPLS = 5)
-fit_tf_Tmin <- fxTWAPLS::TWAPLS.w(taxa, 
-                                  modern_pollen$Tmin, 
-                                  nPLS = 5, 
-                                  usefx = TRUE, 
-                                  fx_method = "bin",
-                                  bin = 0.02)
-fxTWAPLS::plot_train(fit_Tmin, 3)
-fxTWAPLS::plot_train(fit_f_Tmin, 3)
-fxTWAPLS::plot_train(fit_t_Tmin, 3)
-fxTWAPLS::plot_train(fit_tf_Tmin, 3)
+fit_tf_Tmin2 <- fxTWAPLS::TWAPLS.w2(
+  taxa,
+  modern_pollen$Tmin,
+  nPLS = 5,
+  usefx = TRUE,
+  fx_method = "bin",
+  bin = 0.02
+)
+
+nsig <- 3 # This should be got from the random t-test of the cross validation
+fxTWAPLS::plot_train(fit_tf_Tmin2, nsig)
 }
 
 }

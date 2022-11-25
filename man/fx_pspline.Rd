@@ -27,15 +27,21 @@ provide \code{fx} correction for WA-PLS and TWA-PLS.
 modern_pollen <- read.csv("/path/to/modern_pollen.csv")
 
 # Get the frequency of each climate variable fx
-fx_pspline_Tmin <- fxTWAPLS::fx_pspline(modern_pollen$Tmin, 
-                                        bin = 0.02, 
-                                        show_plot = TRUE)
-fx_pspline_gdd <- fxTWAPLS::fx_pspline(modern_pollen$gdd, 
-                                       bin = 20,
-                                       show_plot = TRUE)
-fx_pspline_alpha <- fxTWAPLS::fx_pspline(modern_pollen$alpha, 
-                                         bin = 0.002, 
-                                         show_plot = TRUE)
+fx_pspline_Tmin <- fxTWAPLS::fx_pspline(
+  modern_pollen$Tmin,
+  bin = 0.02,
+  show_plot = TRUE
+)
+fx_pspline_gdd <- fxTWAPLS::fx_pspline(
+  modern_pollen$gdd,
+  bin = 20,
+  show_plot = TRUE
+)
+fx_pspline_alpha <- fxTWAPLS::fx_pspline(
+  modern_pollen$alpha,
+  bin = 0.002,
+  show_plot = TRUE
+)
 }
 
 }

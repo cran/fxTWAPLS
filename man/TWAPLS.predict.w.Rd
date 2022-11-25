@@ -29,7 +29,7 @@ TWA-PLS predict function
 \dontrun{
 # Load modern pollen data
 modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-                                      
+
 # Extract taxa
 taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
@@ -41,19 +41,31 @@ taxaColMin <- which(colnames(Holocene) == "taxa0")
 taxaColMax <- which(colnames(Holocene) == "taxaN")
 core <- Holocene[, taxaColMin:taxaColMax]
 
-# MTCO
 ## Train
 fit_t_Tmin <- fxTWAPLS::TWAPLS.w(taxa, modern_pollen$Tmin, nPLS = 5)
-fit_tf_Tmin <- fxTWAPLS::TWAPLS.w(taxa, 
-                                  modern_pollen$Tmin, 
-                                  nPLS = 5, 
-                                  usefx = TRUE, 
-                                  fx_method = "bin",
-                                  bin = 0.02)
-    
+fit_tf_Tmin <- fxTWAPLS::TWAPLS.w(
+  taxa,
+  modern_pollen$Tmin,
+  nPLS = 5,
+  usefx = TRUE,
+  fx_method = "bin",
+  bin = 0.02
+)
+fit_t_Tmin2 <- fxTWAPLS::TWAPLS.w2(taxa, modern_pollen$Tmin, nPLS = 5)
+fit_tf_Tmin2 <- fxTWAPLS::TWAPLS.w2(
+  taxa,
+  modern_pollen$Tmin,
+  nPLS = 5,
+  usefx = TRUE,
+  fx_method = "bin",
+  bin = 0.02
+)
+
 ## Predict
 fossil_t_Tmin <- fxTWAPLS::TWAPLS.predict.w(fit_t_Tmin, core)
 fossil_tf_Tmin <- fxTWAPLS::TWAPLS.predict.w(fit_tf_Tmin, core)
+fossil_t_Tmin2 <- fxTWAPLS::TWAPLS.predict.w(fit_t_Tmin2, core)
+fossil_tf_Tmin2 <- fxTWAPLS::TWAPLS.predict.w(fit_tf_Tmin2, core)
 }
 
 }

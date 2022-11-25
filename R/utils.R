@@ -9,6 +9,7 @@ pb <- function(expr, ...) {
   progress_bar <-
     progressr::handler_progress(format = "(:current/:total) [:bar] :percent")
   progressr::with_progress(expr,
-                           ...,
-                           handlers = progress_bar)
+    ...,
+    handlers = progress_bar
+  )
 }

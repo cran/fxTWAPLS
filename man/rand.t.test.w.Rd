@@ -49,39 +49,15 @@ Do a random t-test to the cross-validation results.
 }
 \examples{
 \dontrun{
-# Load modern pollen data
-modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-                                      
-# Extract taxa
-taxaColMin <- which(colnames(modern_pollen) == "taxa0")
-taxaColMax <- which(colnames(modern_pollen) == "taxaN")
-taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
-## LOOCV
-test_mode <- TRUE # It should be set to FALSE before running
-### without fx
-cv_t_Tmin <- fxTWAPLS::cv.w(taxa,
-                            modern_pollen$Tmin,
-                            nPLS = 5,
-                            fxTWAPLS::TWAPLS.w,
-                            fxTWAPLS::TWAPLS.predict.w,
-                            cpus = 2, # Remove the following line
-                            test_mode = test_mode) \%>\% fxTWAPLS::pb()
-### with fx
-cv_tf_Tmin <- fxTWAPLS::cv.w(taxa,
-                             modern_pollen$Tmin,
-                             nPLS = 5,
-                             fxTWAPLS::TWAPLS.w,
-                             fxTWAPLS::TWAPLS.predict.w,
-                             usefx = TRUE,
-                             fx_method = "bin",
-                             bin = 0.02,
-                             cpus = 2, # Remove the following line
-                             test_mode = test_mode) \%>\% fxTWAPLS::pb()
-                            
 ## Random t-test
-rand_t_Tmin <- fxTWAPLS::rand.t.test.w(cv_t_Tmin, n.perm = 999)
-rand_tf_Tmin <- fxTWAPLS::rand.t.test.w(cv_tf_Tmin, n.perm = 999)
+rand_pr_tf_Tmin2 <- fxTWAPLS::rand.t.test.w(cv_pr_tf_Tmin2, n.perm = 999)
+
+# note: choose the last significant number of components based on the p-value,
+# see details at Liu Mengmeng, Prentice Iain Colin, ter Braak Cajo J. F.,
+# Harrison Sandy P.. 2020 An improved statistical approach for reconstructing
+# past climates from biotic assemblages. Proc. R. Soc. A. 476: 20200346.
+# <https://doi.org/10.1098/rspa.2020.0346>
 }
 
 }

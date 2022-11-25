@@ -66,7 +66,7 @@ Pseudo-removed leave-out cross-validation
 \dontrun{
 # Load modern pollen data
 modern_pollen <- read.csv("/path/to/modern_pollen.csv")
-                                      
+
 # Extract taxa
 taxaColMin <- which(colnames(modern_pollen) == "taxa0")
 taxaColMax <- which(colnames(modern_pollen) == "taxaN")
@@ -74,56 +74,48 @@ taxa <- modern_pollen[, taxaColMin:taxaColMax]
 
 point <- modern_pollen[, c("Long", "Lat")]
 test_mode <- TRUE # It should be set to FALSE before running
-dist <- fxTWAPLS::get_distance(point, 
-                               cpus = 2, # Remove the following line
-                               test_mode = test_mode)
-pseudo_Tmin <- fxTWAPLS::get_pseudo(dist, 
-                                    modern_pollen$Tmin, 
-                                    cpus = 2, # Remove the following line
-                                    test_mode = test_mode)
+dist <- fxTWAPLS::get_distance(
+  point,
+  cpus = 2, # Remove the following line
+  test_mode = test_mode
+)
+pseudo_Tmin <- fxTWAPLS::get_pseudo(
+  dist,
+  modern_pollen$Tmin,
+  cpus = 2, # Remove the following line
+  test_mode = test_mode
+)
 
-cv_pr_t_Tmin <- fxTWAPLS::cv.pr.w(taxa,
-                                  modern_pollen$Tmin,
-                                  nPLS = 5,
-                                  fxTWAPLS::TWAPLS.w,
-                                  fxTWAPLS::TWAPLS.predict.w,
-                                  pseudo_Tmin,
-                                  cpus = 2, # Remove the following line
-                                  test_mode = test_mode)
-cv_pr_tf_Tmin <- fxTWAPLS::cv.pr.w(taxa,
-                                   modern_pollen$Tmin,
-                                   nPLS = 5,
-                                   fxTWAPLS::TWAPLS.w,
-                                   fxTWAPLS::TWAPLS.predict.w,
-                                   pseudo_Tmin,
-                                   usefx = TRUE,
-                                   fx_method = "bin",
-                                   bin = 0.02,
-                                   cpus = 2, # Remove the following line
-                                   test_mode = test_mode)                                
+cv_pr_tf_Tmin2 <- fxTWAPLS::cv.pr.w(
+  taxa,
+  modern_pollen$Tmin,
+  nPLS = 5,
+  fxTWAPLS::TWAPLS.w2,
+  fxTWAPLS::TWAPLS.predict.w,
+  pseudo_Tmin,
+  usefx = TRUE,
+  fx_method = "bin",
+  bin = 0.02,
+  cpus = 2, # Remove the following line
+  test_mode = test_mode
+)
 
 # Run with progress bar
 `\%>\%` <- magrittr::`\%>\%`
-cv_pr_t_Tmin <- fxTWAPLS::cv.pr.w(taxa,
-                                  modern_pollen$Tmin,
-                                  nPLS = 5,
-                                  fxTWAPLS::TWAPLS.w,
-                                  fxTWAPLS::TWAPLS.predict.w,
-                                  pseudo_Tmin,
-                                  cpus = 2, # Remove the following line
-                                  test_mode = test_mode) \%>\% fxTWAPLS::pb()
-cv_pr_tf_Tmin <- fxTWAPLS::cv.pr.w(taxa,
-                                   modern_pollen$Tmin,
-                                   nPLS = 5,
-                                   fxTWAPLS::TWAPLS.w,
-                                   fxTWAPLS::TWAPLS.predict.w,
-                                   pseudo_Tmin,
-                                   usefx = TRUE,
-                                   fx_method = "bin",
-                                   bin = 0.02,
-                                   cpus = 2, # Remove the following line
-                                   test_mode = test_mode) \%>\% fxTWAPLS::pb()
-                                 
+cv_pr_tf_Tmin2 <- fxTWAPLS::cv.pr.w(
+  taxa,
+  modern_pollen$Tmin,
+  nPLS = 5,
+  fxTWAPLS::TWAPLS.w2,
+  fxTWAPLS::TWAPLS.predict.w,
+  pseudo_Tmin,
+  usefx = TRUE,
+  fx_method = "bin",
+  bin = 0.02,
+  cpus = 2, # Remove the following line
+  test_mode = test_mode
+) \%>\%
+  fxTWAPLS::pb()
 }
 
 }

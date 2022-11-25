@@ -33,14 +33,19 @@ modern_pollen <- read.csv("/path/to/modern_pollen.csv")
 
 point <- modern_pollen[, c("Long", "Lat")]
 test_mode <- TRUE # It should be set to FALSE before running
-dist <- fxTWAPLS::get_distance(point, 
-                               cpus = 2, # Remove the following line
-                               test_mode = test_mode)
+dist <- fxTWAPLS::get_distance(
+  point,
+  cpus = 2, # Remove the following line
+  test_mode = test_mode
+)
 # Run with progress bar
 `\%>\%` <- magrittr::`\%>\%`
-dist <- fxTWAPLS::get_distance(point, 
-                               cpus = 2, # Remove the following line
-                               test_mode = test_mode) \%>\% fxTWAPLS::pb()
+dist <- fxTWAPLS::get_distance(
+  point,
+  cpus = 2, # Remove the following line
+  test_mode = test_mode
+) \%>\%
+  fxTWAPLS::pb()
 }
 
 }
