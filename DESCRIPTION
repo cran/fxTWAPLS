@@ -1,6 +1,6 @@
 Package: fxTWAPLS
 Title: An Improved Version of WA-PLS
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(
     person(given = "Mengmeng",
            family = "Liu",
@@ -43,13 +43,12 @@ URL: https://github.com/special-uor/fxTWAPLS/,
 BugReports: https://github.com/special-uor/fxTWAPLS/issues/
 Imports: doFuture, foreach, future, geosphere, ggplot2, JOPS, MASS,
         parallel, progressr
-Suggests: lintr (>= 3.0.0), magrittr, progress, scales, spelling,
-        styler, tictoc
+Suggests: magrittr, progress, scales, tictoc
 Depends: R (>= 3.6)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.3.1
 Language: en-GB
 NeedsCompilation: no
-Packaged: 2022-11-25 16:26:05 UTC; robertovillegas-diaz
+Packaged: 2024-06-25 11:27:00 UTC; r.villegas-diaz
 Author: Mengmeng Liu [aut] (<https://orcid.org/0000-0001-6250-0148>),
   Iain Colin Prentice [aut] (<https://orcid.org/0000-0002-1296-6764>),
   Cajo J. F. ter Braak [aut] (<https://orcid.org/0000-0002-0414-8745>),
@@ -59,4 +58,4 @@ Author: Mengmeng Liu [aut] (<https://orcid.org/0000-0001-6250-0148>),
   SPECIAL Research Group @ University of Reading [cph]
 Maintainer: Roberto Villegas-Diaz <r.villegas-diaz@outlook.com>
 Repository: CRAN
-Date/Publication: 2022-11-25 16:40:01 UTC
+Date/Publication: 2024-06-25 11:50:13 UTC
